@@ -158,19 +158,20 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    kernelconfig       -config kernel and save defconfig"
    ```
 
-   </br>
+</br>
 
-   ## 📥烧录
+## 📥烧录
 
-   1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1103
+1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1103
 
-   <p align="center">
+<p align="center">
       	<img border="1px" width="75%" src="./images/SocToolKit-select.jpg">
-   </p>
+</p>
 
 
-   2. 把output中的镜像文件如下，烧录到空白的SD卡。SD卡格式化可以使用`SD Card Formatter`。
+2. 把output中的镜像文件如下，烧录到空白的SD卡。SD卡格式化可以使用`SD Card Formatter`。
 
-   <p align="center">
+<p align="center">
       	<img border="1px" width="75%" src="./images/烧录SD.jpg">
-   </p>
+</p>
+
