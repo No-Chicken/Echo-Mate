@@ -1,5 +1,7 @@
 # EchoMate - SDK
 
+</br>
+
 ## :ledger: 获取SDK
 
 你可以使用luckfox的原始仓库的SDK，但是需要改一些东西，例如：`.dts`, `.mk`,  `build.sh`, `insmod_wifi.sh`, `kernal config`, `buildroot config`等，luckfox的获取如下：
@@ -14,6 +16,16 @@ git clone https://github.com/LuckfoxTECH/luckfox-pico.git
 git clone https://github.com/No-Chicken/Echo-Mate.git
 cd ./SDK/luckfox-pico-sdk
 ```
+
+</br>
+
+## 📥安装依赖
+
+```shell
+sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assistant expect g++ gawk texinfo libssl-dev bison flex fakeroot cmake unzip gperf autoconf device-tree-compiler libncurses5-dev pkg-config
+```
+
+</br>
 
 ## :black_nib: 更改luckfox原始SDK
 
@@ -85,5 +97,80 @@ cd ./SDK/luckfox-pico-sdk
 
 8. 修改`buildroot config`，加入你需要的包，例如`iftop`，`wpa_supplicant`等
 
-## :black_nib: 编译
+</br>
 
+## 🔨编译
+
+最好详细查看luckfox的README文档。
+
+1. 首先需要在SDK文件夹选择板级配置，这里选择`[7]custom`，会弹出所有的`.mk`文件，选择echo mate的配置即可
+
+   ```shell
+   ./build.sh lunch
+   ```
+
+2. 一键自动编译
+
+   ```shell
+   ./build.sh 
+   ```
+
+3. `<SDK目录>/build.sh`全部可用选项：
+
+   ```shell
+   Usage: build.sh [OPTIONS]
+   Available options:
+   lunch              -Select Board Configure
+   env                -build env
+   meta               -build meta (optional)
+   uboot              -build uboot
+   kernel             -build kernel
+   rootfs             -build rootfs
+   driver             -build kernel's drivers
+   sysdrv             -build uboot, kernel, rootfs
+   media              -build rockchip media libraries
+   app                -build app
+   recovery           -build recovery
+   tool               -build tool
+   updateimg          -build update image
+   unpackimg          -unpack update image
+   factory            -build factory image
+   all                -build uboot, kernel, rootfs, recovery image
+   allsave            -build all & firmware & save
+   
+   clean              -clean all
+   clean uboot        -clean uboot
+   clean kernel       -clean kernel
+   clean driver       -clean driver
+   clean rootfs       -clean rootfs
+   clean sysdrv       -clean uboot/kernel/rootfs
+   clean media        -clean rockchip media libraries
+   clean app          -clean app
+   clean recovery     -clean recovery
+   
+   firmware           -pack all the image we need to boot up system
+   ota                -pack update_ota.tar
+   save               -save images, patches, commands used to debug
+   check              -check the environment of building
+   info               -see the current board building information
+   
+   buildrootconfig    -config buildroot and save defconfig"
+   kernelconfig       -config kernel and save defconfig"
+   ```
+
+   </br>
+
+   ## 📥烧录
+
+   1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1103
+
+   <p align="center">
+      	<img border="1px" width="75%" src="./images/SocToolKit-select.jpg">
+   </p>
+
+
+   2. 把output中的镜像文件如下，烧录到空白的SD卡。SD卡格式化可以使用`SD Card Formatter`。
+
+   <p align="center">
+      	<img border="1px" width="75%" src="./images/烧录SD.jpg">
+   </p>
