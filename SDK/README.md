@@ -89,13 +89,28 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 5. 在`<SDK路径>/`下加入`external`文件夹放置rtl8723的bin文件，详见本仓库的加入的东西，直接复制即可；
 
-6. 修改`kernel config`，需要使能rtl8723的drive
+6. 进入`<SDK路径>/sysdrv/source/kernel`，修改`kernel config`，需要使能rtl8723的drive
+
+   ```shell
+   make ARCH=arm menuconfig
+   ```
 
 7. <p align="center">
    	<img border="1px" width="60%" src="./images/kernel config-rtl8723.jpg">
    </p>
 
-8. 修改`buildroot config`，加入你需要的包，例如`iftop`，`wpa_supplicant`等
+   然后保存
+
+   ```shell
+   make ARCH=arm savedefconfig
+   ```
+
+8. 修改`buildroot config`，加入你需要的包，例如`iftop`，`wpa_supplicant`等同样也是设置再保存
+
+   ```shell
+   make menuconfig
+   make savedefconfig
+   ```
 
 </br>
 
