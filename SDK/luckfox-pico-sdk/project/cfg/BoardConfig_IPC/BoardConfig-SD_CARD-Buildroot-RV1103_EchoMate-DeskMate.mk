@@ -8,14 +8,13 @@
 export RK_CHIP=rv1106
 
 # app config
-export RK_APP_TYPE=RKIPC_RV1103
+export RK_APP_TYPE=RKIPC_RV1106
 
 # Config CMA size in environment
-export RK_BOOTARGS_CMA_SIZE="24M"
+export RK_BOOTARGS_CMA_SIZE="66M"
 
 # Kernel dts
-export RK_KERNEL_DTS=rv1103g-luckfox-pico-plus.dts
-
+export RK_KERNEL_DTS=rv1106g-luckfox-pico-pro-max.dts
 
 #################################################
 #	BOOT_MEDIUM
@@ -79,6 +78,7 @@ export RK_TOOLCHAIN_CROSS=arm-rockchip830-linux-uclibcgnueabihf
 export RK_MISC=wipe_all-misc.img
 
 # Uboot defconfig
+export RK_UBOOT_DEFCONFIG=rv1106_defconfig
 export RK_UBOOT_DEFCONFIG=luckfox_rv1106_uboot_defconfig
 
 # Kernel defconfig
