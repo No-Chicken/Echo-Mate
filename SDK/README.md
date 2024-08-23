@@ -2,7 +2,7 @@
 
 </br>
 
-## :ledger: 获取SDK
+## :ledger: 1. 获取SDK
 
 你可以使用luckfox的原始仓库的SDK，但是需要改一些东西，例如：`.dts`, `.mk`,  `build.sh`, `insmod_wifi.sh`, `kernal config`, `buildroot config`等，luckfox的获取如下：
 
@@ -19,7 +19,7 @@ cd ./SDK/luckfox-pico-sdk
 
 </br>
 
-## 📥安装依赖
+## 📥2. 安装依赖
 
 ```shell
 sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assistant expect g++ gawk texinfo libssl-dev bison flex fakeroot cmake unzip gperf autoconf device-tree-compiler libncurses5-dev pkg-config
@@ -27,11 +27,11 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 </br>
 
-## :black_nib: 更改luckfox原始SDK
+## :black_nib: 3. 更改luckfox原始SDK
 
-### 使用本仓库改过的SDK可跳过以下操作：
+### 注：使用本仓库改过的SDK可跳过以下操作：
 
-1. 首先需要修改设备树，因为需要使用到wifi以方便用户ssh或者连wifi运行demo，修改`<SDK路径>/sysdrv/source/kernel/arch/arm/boot/dts/rv1103g-luckfox-pico-plus.dts`
+1. 首先需要修改设备树，因为需要使用到wifi以方便用户ssh或者连wifi运行demo，修改`<SDK路径>/sysdrv/source/kernel/arch/arm/boot/dts/rv1106g-luckfox-pico-pro-max.dts`
 
    ```dts
    /***********mmc interface for wifi map to sdmmc1 set for sdio mode**********/
@@ -51,7 +51,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    };
    ```
 
-2. 板载配置需要使能WIFI，在`<SDK路径>/project/cfg/BoardConfig_IPC/BoardConfig-SD_CARD-Buildroot-RV1103_Luckfox_Pico_Plus-IPC.mk`加入如下语句
+2. 板载配置需要使能WIFI，在`<SDK路径>/project/cfg/BoardConfig_IPC/BoardConfig-SD_CARD-Buildroot-RV1106_Luckfox_Pico_Pro_Max-IPC.mk`加入如下语句
 
    ```sh
    # enable external wifi module
@@ -99,6 +99,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    	<img border="1px" width="60%" src="./images/kernel config-rtl8723.jpg">
    </p>
 
+
    然后保存
 
    ```shell
@@ -114,11 +115,11 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 </br>
 
-## 🔨编译
+## 🔨4. 编译
 
 最好详细查看luckfox的README文档。
 
-1. 首先需要在SDK文件夹选择板级配置，这里选择`[7]custom`，会弹出所有的`.mk`文件，选择echo mate的配置即可
+1. 首先需要在SDK文件夹选择板级配置，这里选择`[7]custom`，会弹出所有的`.mk`文件，选择echo mate的配置即可，当然你也可以选择直接用改过的原配置文件
 
    ```shell
    ./build.sh lunch
@@ -175,9 +176,9 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 </br>
 
-## 📥烧录
+## 📥5. 烧录
 
-1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1103
+1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1106
 
 <p align="center">
       	<img border="1px" width="75%" src="./images/SocToolKit-select.jpg">
@@ -189,4 +190,50 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 <p align="center">
       	<img border="1px" width="75%" src="./images/烧录SD.jpg">
 </p>
+
+</br>
+
+## 💻6. 开发板使用
+
+### 6.1 如何使用WIFI：
+
+1. 开启wifi
+
+   ```
+   ifconfig wlan0 up
+   ```
+
+2. 进入wpa conf，`vi /etc/wpa_supplicant.conf`，配置wifi名和密码
+
+   ```bash
+   ctrl_interface=/var/run/wpa_supplicant
+   ap_scan=1
+   update_config=1
+   
+   network={
+           ssid="luckfox"
+           psk="12345678"
+           key_mgmt=WPA-PSK
+   }
+   ```
+
+3. 创建一个socket文件
+
+   ```bash
+   mkdir -p /var/run/wpa_supplicant
+   ```
+
+4. 连接wifi
+
+   ```bash
+   wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
+   ```
+
+5. 配置IP
+
+   ```bash
+   udhcpc -i wlan0
+   ```
+
+6. 然后你就可以ping一下baidu等网站测下网络了
 
