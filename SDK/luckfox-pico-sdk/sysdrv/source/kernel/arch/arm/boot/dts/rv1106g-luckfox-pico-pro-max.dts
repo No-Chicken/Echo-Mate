@@ -69,14 +69,25 @@
 };
 
 /**********SPI**********/
+/* SPI0_M0 */
 &spi0 {
-	status = "okay";
-	spidev@0 {
-		spi-max-frequency = <50000000>;
-	};
-  fbtft@0 {
-		spi-max-frequency = <50000000>;
-  };
+        status = "okay";
+        pinctrl-0 = <&spi0m0_clk &spi0m0_mosi &spi0m0_cs0>;
+        spidev@0 {
+                status = "disabled";
+                spi-max-frequency = <50000000>;
+        };
+        fbtft@0{
+                compatible = "sitronix,st7789v";
+                reg = <0>;
+                spi-max-frequency = <20000000>;
+                fps = <30>;
+                buswidth = <8>;
+                debug = <0x7>;
+                led-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_LOW>;//BL
+                dc = <&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>;      //DC
+                reset = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;    //RES
+        };
 };
 
 /**********I2C**********/
