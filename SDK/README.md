@@ -195,6 +195,8 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 ## 💻6. 开发板使用
 
+注：登录账号和密码，改过的SDK都设置为了`root`，如果需要改密码，除了常规的在buildroot deconfig里面更改，还需要在 <luckfox-sdk>/sysdrv/tools/board/buildroot/shadow_defconfig修改你的密码计算哈希值，再编译。
+
 ### 6.1 如何使用WIFI：
 
 1. 开启wifi
