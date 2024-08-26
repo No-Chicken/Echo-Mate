@@ -96,7 +96,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    ```
 
 7. <p align="center">
-   	<img border="1px" width="60%" src="./images/kernel config-rtl8723.jpg">
+   	<img border="1px" width="60%" src="./res/kernel config-rtl8723.jpg">
    </p>
 
 
@@ -181,14 +181,14 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1106
 
 <p align="center">
-      	<img border="1px" width="75%" src="./images/SocToolKit-select.jpg">
+      	<img border="1px" width="75%" src="./res/SocToolKit-select.jpg">
 </p>
 
 
 2. 把output中的镜像文件如下，烧录到空白的SD卡。SD卡格式化可以使用`SD Card Formatter`。
 
 <p align="center">
-      	<img border="1px" width="75%" src="./images/烧录SD.jpg">
+      	<img border="1px" width="75%" src="./res/烧录SD.jpg">
 </p>
 
 </br>

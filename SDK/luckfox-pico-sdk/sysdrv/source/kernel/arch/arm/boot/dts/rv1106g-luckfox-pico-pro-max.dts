@@ -80,8 +80,8 @@
         fbtft@0{
                 compatible = "sitronix,st7789v";
                 reg = <0>;
-                spi-max-frequency = <20000000>;
-                fps = <30>;
+                spi-max-frequency = <50000000>;
+                fps = <60>;
                 buswidth = <8>;
                 debug = <0x7>;
                 led-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_LOW>;//BL
