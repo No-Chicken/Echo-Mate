@@ -99,6 +99,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    	<img border="1px" width="60%" src="./res/kernel config-rtl8723.jpg">
    </p>
 
+   
 
    然后保存
 
@@ -185,11 +186,13 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 </p>
 
 
+
 2. 把output中的镜像文件如下，烧录到空白的SD卡。SD卡格式化可以使用`SD Card Formatter`。
 
 <p align="center">
       	<img border="1px" width="75%" src="./res/烧录SD.jpg">
 </p>
+
 
 </br>
 
@@ -205,7 +208,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    ifconfig wlan0 up
    ```
 
-2. 进入wpa conf，`vi /etc/wpa_supplicant.conf`，配置wifi名和密码
+2. 进入wpa conf，`vi /etc/wpa_supplicant.conf`，配置wifi名和密码。
 
    ```bash
    ctrl_interface=/var/run/wpa_supplicant
@@ -225,10 +228,25 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    mkdir -p /var/run/wpa_supplicant
    ```
 
-4. 连接wifi
+4. 连接wifi，然后需要等待一会，会输出以下内容：
 
    ```bash
-   wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
+   [root@root ]# wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
+   
+   Successfully initialized wpa_supplicant
+   rfkill: Cannot open RFKILL control device
+   [  670.124975] RTL8723BS: rtw_set_802_11_connect(wlan0)  fw_state = 0x00000008
+   [  678.988193] RTL8723BS: rtw_set_802_11_connect(wlan0)  fw_state = 0x00000008
+   [  688.127631] RTL8723BS: rtw_set_802_11_connect(wlan0)  fw_state = 0x00000008
+   [  697.804890] RTL8723BS: rtw_set_802_11_connect(wlan0)  fw_state = 0x00000008
+   [  698.446240] RTL8723BS: start auth
+   [  698.466241] RTL8723BS: auth success, start assoc
+   [  698.521065] RTL8723BS: rtw_cfg80211_indicate_connect(wlan0) BSS not found !!
+   [  698.521119] RTL8723BS: assoc success
+   [  698.598174] RTL8723BS: send eapol packet
+   [  698.643221] RTL8723BS: send eapol packet
+   [  698.644951] RTL8723BS: set pairwise key camid:4, addr:9e:a4:d3:f5:da:8d, kid:0, type:AES
+   [  698.647953] RTL8723BS: set group key camid:5, addr:9e:a4:d3:f5:da:8d, kid:1, type:AES
    ```
 
 5. 配置IP
@@ -238,4 +256,10 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    ```
 
 6. 然后你就可以ping一下baidu等网站测下网络了
+
+7. 如果想要切换`WiFi`，需要重启 `wpa_supplicant` 服务，需要运行
+
+   ```bash
+   killall -9 wpa_supplicant 
+   ```
 
