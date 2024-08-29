@@ -43,7 +43,7 @@
 
 
 #define FB_HIGHT   240
-#define FB_WEIGHT  240
+#define FB_WIDTH  240
 
 /*-------------------------------------------
                   Main Function
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
         close(fb);
         return -1;
     }
-    size_t    screensize = FB_HIGHT * FB_WEIGHT * 2;
+    size_t    screensize = FB_HIGHT * FB_WIDTH * 2;
     uint16_t* framebuffer = (uint16_t*)mmap(NULL, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
     cv::Mat   rgb565Image(240, 240, CV_16UC1);
     
