@@ -99,3 +99,13 @@ todo
 ### 4.2 如何传输文件：
 
 1. 使用SSH
+   ```bash
+   # 传输文件
+   scp ssh-test.txt root@172.32.0.93:/root
+   # 传输文件夹
+   scp -r ssh-test root@172.32.0.93:/root
+   ```
+
+2. 其他
+   samba, ADB这些详见网上教程
+
