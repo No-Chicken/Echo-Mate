@@ -101,9 +101,9 @@ todo
 1. 使用SSH
    ```bash
    # 传输文件
-   scp ssh-test.txt root@172.32.0.93:/root
+   scp ./send_file.txt root@172.32.0.93:/root
    # 传输文件夹
-   scp -r ssh-test root@172.32.0.93:/root
+   scp -r ./send_files root@172.32.0.93:/root
    ```
 
 2. 其他
