@@ -59,7 +59,7 @@ todo
    mkdir -p /var/run/wpa_supplicant
    ```
 
-4. 连接wifi，然后需要等待一会，会输出以下内容：
+4. 然后使用`wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0`连接wifi，然后需要等待一会，会输出以下内容：
 
    ```bash
    [root@root ]# wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
