@@ -145,7 +145,7 @@ int main(int argc, char **argv)
         memset(text,0,8); 
         
         cv::resize(bgr, bgr, cv::Size(240,240), 0, 0, cv::INTER_LINEAR);
-        int offset = 20;
+        int y_offset = 20;
         for (int i = 0; i < bgr.rows; ++i) {
             for (int j = 0; j < bgr.cols; ++j) {
                 uint16_t b = (bgr.at<cv::Vec3b>(i, j)[0] >> 3);
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
                 uint16_t r = (bgr.at<cv::Vec3b>(i, j)[2] >> 3) << 11;
 
                 rgb565Image.at<uint16_t>(i, j) = r | g | b;
-                framebuffer[(i+offset) * FB_HIGHT + j] = rgb565Image.at<uint16_t>(i, j);
+                framebuffer[ (i + y_offset) * FB_WIDTH + j] = rgb565Image.at<uint16_t>(i, j);
             }
         }
     }
