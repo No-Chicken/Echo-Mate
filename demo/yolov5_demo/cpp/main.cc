@@ -42,8 +42,8 @@
 #include <time.h>
 
 
-#define FB_HIGHT   240
-#define FB_WEIGHT  240
+#define FB_HIGHT   280
+#define FB_WIDTH  240
 
 /*-------------------------------------------
                   Main Function
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
         close(fb);
         return -1;
     }
-    size_t    screensize = FB_HIGHT * FB_WEIGHT * 2;
+    size_t    screensize = FB_HIGHT * FB_WIDTH * 2;
     uint16_t* framebuffer = (uint16_t*)mmap(NULL, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
     cv::Mat   rgb565Image(240, 240, CV_16UC1);
     
@@ -145,6 +145,7 @@ int main(int argc, char **argv)
         memset(text,0,8); 
         
         cv::resize(bgr, bgr, cv::Size(240,240), 0, 0, cv::INTER_LINEAR);
+        int y_offset = 20;
         for (int i = 0; i < bgr.rows; ++i) {
             for (int j = 0; j < bgr.cols; ++j) {
                 uint16_t b = (bgr.at<cv::Vec3b>(i, j)[0] >> 3);
@@ -152,7 +153,7 @@ int main(int argc, char **argv)
                 uint16_t r = (bgr.at<cv::Vec3b>(i, j)[2] >> 3) << 11;
 
                 rgb565Image.at<uint16_t>(i, j) = r | g | b;
-                framebuffer[i * FB_HIGHT + j] = rgb565Image.at<uint16_t>(i, j);
+                framebuffer[ (i + y_offset) * FB_WIDTH + j] = rgb565Image.at<uint16_t>(i, j);
             }
         }
     }

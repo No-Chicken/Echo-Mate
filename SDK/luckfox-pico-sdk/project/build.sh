@@ -159,7 +159,8 @@ function choose_target_board() {
 	echo "${space8}${space8}[4] RV1106_Luckfox_Pico_Pro_Max"
 	echo "${space8}${space8}[5] RV1106_Luckfox_Pico_Ultra"
 	echo "${space8}${space8}[6] RV1106_Luckfox_Pico_Ultra_W"
-	echo "${space8}${space8}[7] custom"
+	echo "${space8}${space8}[7] RV1106_Echo_Mate"
+	echo "${space8}${space8}[8] custom"
 	read -p "Which would you like? [0~7][default:0]: " HW_INDEX
 
 	if [ -z "$HW_INDEX" ]; then
@@ -171,9 +172,9 @@ function choose_target_board() {
 		exit 1
 	else
 		if (($HW_INDEX < 0 || $HW_INDEX > 8)); then
-			msg_error "Error: HW_INDEX is not in the range 0-7."
+			msg_error "Error: HW_INDEX is not in the range 0-8."
 			exit 1
-		elif [ $HW_INDEX == 7 ]; then
+		elif [ $HW_INDEX == 8 ]; then
 			for item in ${RK_TARGET_BOARD_ARRAY[@]}; do
 				local f0 boot_medium ddr sys_ver hardware_version product_name
 				echo "----------------------------------------------------------------"
@@ -227,10 +228,15 @@ function choose_target_board() {
 		echo "${space8}${space8}[1] SPI_NAND"
 		read -p "Which would you like? [0~1][default:0]: " BM_INDEX
 		MAX_BM_INDEX=1
-	elif (("$HW_INDEX" >= 5 && "$HW_INDEX" < 8)); then
+	elif (("$HW_INDEX" >= 5 && "$HW_INDEX" < 7)); then
 		echo "${space8}${space8}[0] EMMC"
 		read -p "Which would you like? [0][default:0]: " BM_INDEX
 		MAX_BM_INDEX=0
+	elif (("$HW_INDEX" == 7)); then
+		echo "${space8}${space8}[0] SD_CARD"
+		echo "${space8}${space8}[1] SPI_NAND"
+		read -p "Which would you like? [0][default:0]: " BM_INDEX
+		MAX_BM_INDEX=1
 	fi
 
 	if [ -z "$BM_INDEX" ]; then
@@ -278,11 +284,18 @@ function choose_target_board() {
 	fi
 
 	# EMMC
-	if (("$HW_INDEX" >= 5 && "$HW_INDEX" < 8)); then
+	if (("$HW_INDEX" >= 5 && "$HW_INDEX" < 7)); then
 		BM_INDEX=$BM_INDEX+2
 	fi
 
-	RK_BUILD_TARGET_BOARD="BoardConfig_IPC/BoardConfig-${LF_BOOT_MEDIA[$BM_INDEX]}-${LF_SYSTEM[$SYS_INDEX]}-${LF_HARDWARE[$HW_INDEX]}-IPC.mk"
+	if (("$HW_INDEX" == 7)); then
+		echo "CHOSE ECHO MATE"
+		RK_BUILD_TARGET_BOARD="BoardConfig_IPC/BoardConfig-${LF_BOOT_MEDIA[$BM_INDEX]}-${LF_SYSTEM[$SYS_INDEX]}-RV1106_EchoMate-DeskMate.mk"
+	else
+		RK_BUILD_TARGET_BOARD="BoardConfig_IPC/BoardConfig-${LF_BOOT_MEDIA[$BM_INDEX]}-${LF_SYSTEM[$SYS_INDEX]}-${LF_HARDWARE[$HW_INDEX]}-IPC.mk"
+	fi
+
+	
 }
 
 function build_select_board() {
