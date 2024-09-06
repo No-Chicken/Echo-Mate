@@ -150,8 +150,8 @@ function choose_target_board() {
 	# Get Hardware Version
 	local HW_INDEX
 	echo "You're building on Linux"
-	echo -e "${C_GREEN} "${space8}Lunch menu...pick the Luckfox Pico hardware version:"${C_NORMAL}"
-	echo -e "${C_GREEN} "${space8}选择 Luckfox Pico 硬件版本:"${C_NORMAL}"
+	echo -e "${C_GREEN} "${space8}Lunch menu...pick the hardware:"${C_NORMAL}"
+	echo -e "${C_GREEN} "${space8}选择 硬件:"${C_NORMAL}"
 	echo "${space8}${space8}[0] RV1103_Luckfox_Pico"
 	echo "${space8}${space8}[1] RV1103_Luckfox_Pico_Mini_A"
 	echo "${space8}${space8}[2] RV1103_Luckfox_Pico_Mini_B"
@@ -161,10 +161,10 @@ function choose_target_board() {
 	echo "${space8}${space8}[6] RV1106_Luckfox_Pico_Ultra_W"
 	echo "${space8}${space8}[7] RV1106_Echo_Mate"
 	echo "${space8}${space8}[8] custom"
-	read -p "Which would you like? [0~7][default:0]: " HW_INDEX
+	read -p "Which would you like? [0~8][default:7]: " HW_INDEX
 
 	if [ -z "$HW_INDEX" ]; then
-		HW_INDEX=0
+		HW_INDEX=7
 	fi
 
 	if ! [[ "$HW_INDEX" =~ ^[0-9]+$ ]]; then
