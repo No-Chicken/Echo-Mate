@@ -109,3 +109,16 @@ todo
 2. 其他
    samba, ADB这些详见网上教程
 
+### 4.3 如何测试屏幕：
+
+1. 开启背光
+   ```bash
+   echo 1 > sys/class/backlight/fb_st7789v/bl_power
+   ```
+
+2. 测试花屏和清屏
+   ```bash
+   cat /dev/urandom > /dev/fb0
+   cat /dev/zero > /dev/fb0
+   ```
+   
