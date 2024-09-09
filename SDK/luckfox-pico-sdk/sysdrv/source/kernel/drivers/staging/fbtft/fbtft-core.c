@@ -116,34 +116,34 @@ static int fbtft_request_gpios(struct fbtft_par *par)
 	int i;
 	int ret;
 
-	ret = fbtft_request_one_gpio(par, "reset", 0, &par->gpio.reset);
+	ret = fbtft_request_one_gpio(par, "reset-gpios", 0, &par->gpio.reset);
 	if (ret)
 		return ret;
-	ret = fbtft_request_one_gpio(par, "dc", 0, &par->gpio.dc);
+	ret = fbtft_request_one_gpio(par, "dc-gpios", 0, &par->gpio.dc);
 	if (ret)
 		return ret;
-	ret = fbtft_request_one_gpio(par, "rd", 0, &par->gpio.rd);
+	ret = fbtft_request_one_gpio(par, "rd-gpios", 0, &par->gpio.rd);
 	if (ret)
 		return ret;
-	ret = fbtft_request_one_gpio(par, "wr", 0, &par->gpio.wr);
+	ret = fbtft_request_one_gpio(par, "wr-gpios", 0, &par->gpio.wr);
 	if (ret)
 		return ret;
-	ret = fbtft_request_one_gpio(par, "cs", 0, &par->gpio.cs);
+	ret = fbtft_request_one_gpio(par, "cs-gpios", 0, &par->gpio.cs);
 	if (ret)
 		return ret;
-	ret = fbtft_request_one_gpio(par, "latch", 0, &par->gpio.latch);
+	ret = fbtft_request_one_gpio(par, "latch-gpios", 0, &par->gpio.latch);
 	if (ret)
 		return ret;
 	for (i = 0; i < 16; i++) {
-		ret = fbtft_request_one_gpio(par, "db", i,
+		ret = fbtft_request_one_gpio(par, "db-gpios", i,
 					     &par->gpio.db[i]);
 		if (ret)
 			return ret;
-		ret = fbtft_request_one_gpio(par, "led", i,
+		ret = fbtft_request_one_gpio(par, "led-gpios", i,
 					     &par->gpio.led[i]);
 		if (ret)
 			return ret;
-		ret = fbtft_request_one_gpio(par, "aux", i,
+		ret = fbtft_request_one_gpio(par, "aux-gpios", i,
 					     &par->gpio.aux[i]);
 		if (ret)
 			return ret;
