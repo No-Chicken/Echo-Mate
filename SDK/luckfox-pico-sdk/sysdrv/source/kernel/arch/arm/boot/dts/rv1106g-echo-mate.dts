@@ -84,8 +84,19 @@
 /**********I2C**********/
 /* I2C3_M1 */
 &i2c3 {
-	status = "disabled";
+	status = "okay";
 	clock-frequency = <100000>;
+    focaltech@38 { 
+		compatible = "focaltech,fts";	
+		reg = <0x38>;  					
+		interrupt-parent = <&gpio1>;				
+		interrupts = <RK_PD1 IRQ_TYPE_EDGE_FALLING>;
+		focaltech,reset-gpio = <&gpio1 RK_PD0 GPIO_ACTIVE_LOW>;
+		focaltech,irq-gpio = <&gpio1 RK_PD1 IRQ_TYPE_LEVEL_LOW>; 
+
+		focaltech,max-touch-number = <5>;			
+		focaltech,display-coords =  <0 0 240 320>;
+	};
 };
 
 /* I2C1_M1 */

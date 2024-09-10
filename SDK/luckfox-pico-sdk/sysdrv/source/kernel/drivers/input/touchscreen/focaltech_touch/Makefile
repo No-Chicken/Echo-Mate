@@ -15,5 +15,5 @@ focaltech-ts-y += focaltech_esdcheck.o
 focaltech-ts-y += focaltech_i2c.o
 focaltech-ts-y += focaltech_point_report_check.o
 focaltech-ts-y += focaltech_upgrade_ft8201.o
-focaltech-ts-y += focaltech_test/
+obj-$(CONFIG_TOUCHSCREEN_FTS) += focaltech_test/
 
