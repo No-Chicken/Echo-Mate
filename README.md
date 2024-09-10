@@ -113,7 +113,7 @@ todo
 
 1. 开启背光
    ```bash
-   echo 1 > sys/class/backlight/fb_st7789v/bl_power
+   echo 1 > /sys/class/backlight/fb_st7789v/bl_power
    ```
 
 2. 测试花屏和清屏
