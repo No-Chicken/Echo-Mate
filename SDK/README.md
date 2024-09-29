@@ -1,4 +1,4 @@
-# EchoMate - SDK
+# Echo Mate - SDK
 
 </br>
 
