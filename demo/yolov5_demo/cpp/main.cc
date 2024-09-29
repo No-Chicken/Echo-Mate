@@ -148,11 +148,11 @@ int main(int argc, char **argv)
         int y_offset = 20;
         for (int i = 0; i < bgr.rows; ++i) {
             for (int j = 0; j < bgr.cols; ++j) {
-                uint16_t b = (bgr.at<cv::Vec3b>(i, j)[0] >> 3);
+                uint16_t b = (bgr.at<cv::Vec3b>(i, j)[0] >> 3) << 11;
                 uint16_t g = (bgr.at<cv::Vec3b>(i, j)[1] >> 2) << 5;
-                uint16_t r = (bgr.at<cv::Vec3b>(i, j)[2] >> 3) << 11;
+                uint16_t r = (bgr.at<cv::Vec3b>(i, j)[2] >> 3);
 
-                rgb565Image.at<uint16_t>(i, j) = r | g | b;
+                rgb565Image.at<uint16_t>(i, j) = ~ (r | g | b);
                 framebuffer[ (i + y_offset) * FB_WIDTH + j] = rgb565Image.at<uint16_t>(i, j);
             }
         }
