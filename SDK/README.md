@@ -27,7 +27,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 </br>
 
-## :black_nib: 3. 更改luckfox原始SDK
+## :black_nib: 3. 更改luckfox原始SDK示例
 
 ### 注：使用本仓库改过的SDK可跳过以下操作：
 
