@@ -102,8 +102,6 @@ inline _InputArray::_InputArray() { init(0 + NONE, 0); }
 inline _InputArray::_InputArray(int _flags, void* _obj) { init(_flags, _obj); }
 inline _InputArray::_InputArray(const Mat& m) { init(MAT+ACCESS_READ, &m); }
 inline _InputArray::_InputArray(const std::vector<Mat>& vec) { init(STD_VECTOR_MAT+ACCESS_READ, &vec); }
-inline _InputArray::_InputArray(const UMat& m) { init(UMAT+ACCESS_READ, &m); }
-inline _InputArray::_InputArray(const std::vector<UMat>& vec) { init(STD_VECTOR_UMAT+ACCESS_READ, &vec); }
 
 template<typename _Tp> inline
 _InputArray::_InputArray(const std::vector<_Tp>& vec)
@@ -144,18 +142,6 @@ _InputArray::_InputArray(const Mat_<_Tp>& m)
 inline _InputArray::_InputArray(const double& val)
 { init(FIXED_TYPE + FIXED_SIZE + MATX + CV_64F + ACCESS_READ, &val, Size(1,1)); }
 
-inline _InputArray::_InputArray(const cuda::GpuMat& d_mat)
-{ init(CUDA_GPU_MAT + ACCESS_READ, &d_mat); }
-
-inline _InputArray::_InputArray(const std::vector<cuda::GpuMat>& d_mat)
-{	init(STD_VECTOR_CUDA_GPU_MAT + ACCESS_READ, &d_mat);}
-
-inline _InputArray::_InputArray(const ogl::Buffer& buf)
-{ init(OPENGL_BUFFER + ACCESS_READ, &buf); }
-
-inline _InputArray::_InputArray(const cuda::HostMem& cuda_mem)
-{ init(CUDA_HOST_MEM + ACCESS_READ, &cuda_mem); }
-
 template<typename _Tp> inline
 _InputArray _InputArray::rawIn(const std::vector<_Tp>& vec)
 {
@@ -185,15 +171,11 @@ inline Mat _InputArray::getMat(int i) const
 }
 
 inline bool _InputArray::isMat() const { return kind() == _InputArray::MAT; }
-inline bool _InputArray::isUMat() const  { return kind() == _InputArray::UMAT; }
 inline bool _InputArray::isMatVector() const { return kind() == _InputArray::STD_VECTOR_MAT; }
-inline bool _InputArray::isUMatVector() const  { return kind() == _InputArray::STD_VECTOR_UMAT; }
 inline bool _InputArray::isMatx() const { return kind() == _InputArray::MATX; }
 inline bool _InputArray::isVector() const { return kind() == _InputArray::STD_VECTOR ||
                                                    kind() == _InputArray::STD_BOOL_VECTOR ||
                                                    (kind() == _InputArray::MATX && (sz.width <= 1 || sz.height <= 1)); }
-inline bool _InputArray::isGpuMat() const { return kind() == _InputArray::CUDA_GPU_MAT; }
-inline bool _InputArray::isGpuMatVector() const { return kind() == _InputArray::STD_VECTOR_CUDA_GPU_MAT; }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -201,8 +183,6 @@ inline _OutputArray::_OutputArray() { init(NONE + ACCESS_WRITE, 0); }
 inline _OutputArray::_OutputArray(int _flags, void* _obj) { init(_flags + ACCESS_WRITE, _obj); }
 inline _OutputArray::_OutputArray(Mat& m) { init(MAT+ACCESS_WRITE, &m); }
 inline _OutputArray::_OutputArray(std::vector<Mat>& vec) { init(STD_VECTOR_MAT + ACCESS_WRITE, &vec); }
-inline _OutputArray::_OutputArray(UMat& m) { init(UMAT + ACCESS_WRITE, &m); }
-inline _OutputArray::_OutputArray(std::vector<UMat>& vec) { init(STD_VECTOR_UMAT + ACCESS_WRITE, &vec); }
 
 template<typename _Tp> inline
 _OutputArray::_OutputArray(std::vector<_Tp>& vec)
@@ -268,39 +248,11 @@ template<typename _Tp> inline
 _OutputArray::_OutputArray(const _Tp* vec, int n)
 { init(FIXED_TYPE + FIXED_SIZE + MATX + traits::Type<_Tp>::value + ACCESS_WRITE, vec, Size(n, 1)); }
 
-inline _OutputArray::_OutputArray(cuda::GpuMat& d_mat)
-{ init(CUDA_GPU_MAT + ACCESS_WRITE, &d_mat); }
-
-inline _OutputArray::_OutputArray(std::vector<cuda::GpuMat>& d_mat)
-{	init(STD_VECTOR_CUDA_GPU_MAT + ACCESS_WRITE, &d_mat);}
-
-inline _OutputArray::_OutputArray(ogl::Buffer& buf)
-{ init(OPENGL_BUFFER + ACCESS_WRITE, &buf); }
-
-inline _OutputArray::_OutputArray(cuda::HostMem& cuda_mem)
-{ init(CUDA_HOST_MEM + ACCESS_WRITE, &cuda_mem); }
-
 inline _OutputArray::_OutputArray(const Mat& m)
 { init(FIXED_TYPE + FIXED_SIZE + MAT + ACCESS_WRITE, &m); }
 
 inline _OutputArray::_OutputArray(const std::vector<Mat>& vec)
 { init(FIXED_SIZE + STD_VECTOR_MAT + ACCESS_WRITE, &vec); }
-
-inline _OutputArray::_OutputArray(const UMat& m)
-{ init(FIXED_TYPE + FIXED_SIZE + UMAT + ACCESS_WRITE, &m); }
-
-inline _OutputArray::_OutputArray(const std::vector<UMat>& vec)
-{ init(FIXED_SIZE + STD_VECTOR_UMAT + ACCESS_WRITE, &vec); }
-
-inline _OutputArray::_OutputArray(const cuda::GpuMat& d_mat)
-{ init(FIXED_TYPE + FIXED_SIZE + CUDA_GPU_MAT + ACCESS_WRITE, &d_mat); }
-
-
-inline _OutputArray::_OutputArray(const ogl::Buffer& buf)
-{ init(FIXED_TYPE + FIXED_SIZE + OPENGL_BUFFER + ACCESS_WRITE, &buf); }
-
-inline _OutputArray::_OutputArray(const cuda::HostMem& cuda_mem)
-{ init(FIXED_TYPE + FIXED_SIZE + CUDA_HOST_MEM + ACCESS_WRITE, &cuda_mem); }
 
 template<typename _Tp> inline
 _OutputArray _OutputArray::rawOut(std::vector<_Tp>& vec)
@@ -327,8 +279,6 @@ inline _InputOutputArray::_InputOutputArray() { init(0+ACCESS_RW, 0); }
 inline _InputOutputArray::_InputOutputArray(int _flags, void* _obj) { init(_flags+ACCESS_RW, _obj); }
 inline _InputOutputArray::_InputOutputArray(Mat& m) { init(MAT+ACCESS_RW, &m); }
 inline _InputOutputArray::_InputOutputArray(std::vector<Mat>& vec) { init(STD_VECTOR_MAT+ACCESS_RW, &vec); }
-inline _InputOutputArray::_InputOutputArray(UMat& m) { init(UMAT+ACCESS_RW, &m); }
-inline _InputOutputArray::_InputOutputArray(std::vector<UMat>& vec) { init(STD_VECTOR_UMAT+ACCESS_RW, &vec); }
 
 template<typename _Tp> inline
 _InputOutputArray::_InputOutputArray(std::vector<_Tp>& vec)
@@ -394,41 +344,11 @@ template<typename _Tp> inline
 _InputOutputArray::_InputOutputArray(const _Tp* vec, int n)
 { init(FIXED_TYPE + FIXED_SIZE + MATX + traits::Type<_Tp>::value + ACCESS_RW, vec, Size(n, 1)); }
 
-inline _InputOutputArray::_InputOutputArray(cuda::GpuMat& d_mat)
-{ init(CUDA_GPU_MAT + ACCESS_RW, &d_mat); }
-
-inline _InputOutputArray::_InputOutputArray(ogl::Buffer& buf)
-{ init(OPENGL_BUFFER + ACCESS_RW, &buf); }
-
-inline _InputOutputArray::_InputOutputArray(cuda::HostMem& cuda_mem)
-{ init(CUDA_HOST_MEM + ACCESS_RW, &cuda_mem); }
-
 inline _InputOutputArray::_InputOutputArray(const Mat& m)
 { init(FIXED_TYPE + FIXED_SIZE + MAT + ACCESS_RW, &m); }
 
 inline _InputOutputArray::_InputOutputArray(const std::vector<Mat>& vec)
 { init(FIXED_SIZE + STD_VECTOR_MAT + ACCESS_RW, &vec); }
-
-inline _InputOutputArray::_InputOutputArray(const UMat& m)
-{ init(FIXED_TYPE + FIXED_SIZE + UMAT + ACCESS_RW, &m); }
-
-inline _InputOutputArray::_InputOutputArray(const std::vector<UMat>& vec)
-{ init(FIXED_SIZE + STD_VECTOR_UMAT + ACCESS_RW, &vec); }
-
-inline _InputOutputArray::_InputOutputArray(const cuda::GpuMat& d_mat)
-{ init(FIXED_TYPE + FIXED_SIZE + CUDA_GPU_MAT + ACCESS_RW, &d_mat); }
-
-inline _InputOutputArray::_InputOutputArray(const std::vector<cuda::GpuMat>& d_mat)
-{ init(FIXED_TYPE + FIXED_SIZE + STD_VECTOR_CUDA_GPU_MAT + ACCESS_RW, &d_mat);}
-
-template<> inline _InputOutputArray::_InputOutputArray(std::vector<cuda::GpuMat>& d_mat)
-{ init(FIXED_TYPE + FIXED_SIZE + STD_VECTOR_CUDA_GPU_MAT + ACCESS_RW, &d_mat);}
-
-inline _InputOutputArray::_InputOutputArray(const ogl::Buffer& buf)
-{ init(FIXED_TYPE + FIXED_SIZE + OPENGL_BUFFER + ACCESS_RW, &buf); }
-
-inline _InputOutputArray::_InputOutputArray(const cuda::HostMem& cuda_mem)
-{ init(FIXED_TYPE + FIXED_SIZE + CUDA_HOST_MEM + ACCESS_RW, &cuda_mem); }
 
 template<typename _Tp> inline
 _InputOutputArray _InputOutputArray::rawInOut(std::vector<_Tp>& vec)
@@ -3245,132 +3165,6 @@ const Mat_<_Tp>& operator /= (const Mat_<_Tp>& a, const MatExpr& b)
 
 
 //////////////////////////////// UMat ////////////////////////////////
-
-template<typename _Tp> inline
-UMat::UMat(const std::vector<_Tp>& vec, bool copyData)
-: flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows((int)vec.size()),
-cols(1), allocator(0), usageFlags(USAGE_DEFAULT), u(0), offset(0), size(&rows)
-{
-    if(vec.empty())
-        return;
-    if( !copyData )
-    {
-        // !!!TODO!!!
-        CV_Error(Error::StsNotImplemented, "");
-    }
-    else
-        Mat((int)vec.size(), 1, traits::Type<_Tp>::value, (uchar*)&vec[0]).copyTo(*this);
-}
-
-inline
-UMat UMat::row(int y) const
-{
-    return UMat(*this, Range(y, y + 1), Range::all());
-}
-
-inline
-UMat UMat::col(int x) const
-{
-    return UMat(*this, Range::all(), Range(x, x + 1));
-}
-
-inline
-UMat UMat::rowRange(int startrow, int endrow) const
-{
-    return UMat(*this, Range(startrow, endrow), Range::all());
-}
-
-inline
-UMat UMat::rowRange(const Range& r) const
-{
-    return UMat(*this, r, Range::all());
-}
-
-inline
-UMat UMat::colRange(int startcol, int endcol) const
-{
-    return UMat(*this, Range::all(), Range(startcol, endcol));
-}
-
-inline
-UMat UMat::colRange(const Range& r) const
-{
-    return UMat(*this, Range::all(), r);
-}
-
-inline
-UMat UMat::operator()( Range _rowRange, Range _colRange ) const
-{
-    return UMat(*this, _rowRange, _colRange);
-}
-
-inline
-UMat UMat::operator()( const Rect& roi ) const
-{
-    return UMat(*this, roi);
-}
-
-inline
-UMat UMat::operator()(const Range* ranges) const
-{
-    return UMat(*this, ranges);
-}
-
-inline
-UMat UMat::operator()(const std::vector<Range>& ranges) const
-{
-    return UMat(*this, ranges);
-}
-
-inline
-bool UMat::isContinuous() const
-{
-    return (flags & CONTINUOUS_FLAG) != 0;
-}
-
-inline
-bool UMat::isSubmatrix() const
-{
-    return (flags & SUBMATRIX_FLAG) != 0;
-}
-
-inline
-size_t UMat::elemSize() const
-{
-    size_t res = dims > 0 ? step.p[dims - 1] : 0;
-    CV_DbgAssert(res != 0);
-    return res;
-}
-
-inline
-size_t UMat::elemSize1() const
-{
-    return CV_ELEM_SIZE1(flags);
-}
-
-inline
-int UMat::type() const
-{
-    return CV_MAT_TYPE(flags);
-}
-
-inline
-int UMat::depth() const
-{
-    return CV_MAT_DEPTH(flags);
-}
-
-inline
-int UMat::channels() const
-{
-    return CV_MAT_CN(flags);
-}
-
-inline
-size_t UMat::step1(int i) const
-{
-    return step.p[i] / elemSize1();
-}
 
 
 inline bool UMatData::hostCopyObsolete() const { return (flags & HOST_COPY_OBSOLETE) != 0; }
