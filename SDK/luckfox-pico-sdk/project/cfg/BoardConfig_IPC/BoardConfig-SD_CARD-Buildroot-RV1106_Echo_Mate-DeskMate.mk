@@ -62,7 +62,7 @@ export RK_PARTITION_FS_TYPE_CFG=rootfs@IGNORE@ext4,userdata@/userdata@ext4,oem@/
 export LF_TARGET_ROOTFS=buildroot
 
 # Buildroot defconfig
-export RK_BUILDROOT_DEFCONFIG=luckfox_pico_defconfig
+export RK_BUILDROOT_DEFCONFIG=echo_mate_defconfig
 
 #################################################
 # 	Defconfig
