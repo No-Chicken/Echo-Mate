@@ -311,6 +311,8 @@
 		fps = <60>;
 		buswidth = <8>;
 		debug = <0x7>;
+		rotate = <0>;
+		bgr = <1>;	//RGB->BGR
 		led-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_HIGH>;		//BL
 		dc-gpios = <&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>;		//DC
 		reset-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;		//RES

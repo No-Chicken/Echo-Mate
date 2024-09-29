@@ -10,7 +10,7 @@
 #include "rv1106-echo-mate-ipc.dtsi"
 
 / {
-	model = "Luckfox Pico Max";
+	model = "Echo Mate";
 	compatible = "rockchip,rv1103g-38x38-ipc-v10", "rockchip,rv1106";
 };
 
