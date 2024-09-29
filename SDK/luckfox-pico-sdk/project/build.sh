@@ -290,7 +290,7 @@ function choose_target_board() {
 
 	if (("$HW_INDEX" == 7)); then
 		echo "CHOSE ECHO MATE"
-		RK_BUILD_TARGET_BOARD="BoardConfig_IPC/BoardConfig-${LF_BOOT_MEDIA[$BM_INDEX]}-${LF_SYSTEM[$SYS_INDEX]}-RV1106_EchoMate-DeskMate.mk"
+		RK_BUILD_TARGET_BOARD="BoardConfig_IPC/BoardConfig-${LF_BOOT_MEDIA[$BM_INDEX]}-${LF_SYSTEM[$SYS_INDEX]}-RV1106_Echo_Mate-DeskMate.mk"
 	else
 		RK_BUILD_TARGET_BOARD="BoardConfig_IPC/BoardConfig-${LF_BOOT_MEDIA[$BM_INDEX]}-${LF_SYSTEM[$SYS_INDEX]}-${LF_HARDWARE[$HW_INDEX]}-IPC.mk"
 	fi
