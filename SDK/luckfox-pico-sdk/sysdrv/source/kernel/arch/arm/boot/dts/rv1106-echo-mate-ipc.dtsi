@@ -58,18 +58,19 @@
 		};	
 	};
 
-	// DHT11
-	dht11_sensor {
-        compatible = "dht11";
-        pinctrl-names = "default";
-        pinctrl-0 = <&gpio1_pc7>;
-
-        dht11@1 {
-            gpios = <&gpio1 RK_PC7 GPIO_ACTIVE_HIGH>;
-            label = "dht11";
-            linux,default-trigger = "humidity";
-        };
-    };
+	backlight: backlight {
+		status = "okay";
+		compatible = "pwm-backlight";
+		pwms = <&pwm8 0 300000 0>;
+		brightness-levels = <0 3 5 8 10 13 16 18 21 24 26 29 32 34 37 40 42 45 48 50
+							52 54 56 58 61 64 66 69 72 74 77 80 82 85 88 90 93 96 98
+							101 104 106 109 112 114 117 120 122 125 128 130 133 136
+							138 141 144 146 149 152 154 157 160 162 165 168 170 173
+							176 178 180 182 184 186 188 190 192 194 197 200 202 205 
+							208 210 213 216 218 221 224 226 229 232 234 237 240 242 
+							245 248 250 253 255>;
+    	default-brightness-level = <50>; 
+	};
 
 };
 
@@ -313,7 +314,7 @@
 		debug = <0x7>;
 		rotate = <0>;
 		bgr = <1>;	//RGB->BGR
-		led-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_HIGH>;		//BL
+		//led-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_HIGH>;		//BL
 		dc-gpios = <&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>;		//DC
 		reset-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;		//RES
 	};

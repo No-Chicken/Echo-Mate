@@ -81,6 +81,12 @@
 	};
 };
 
+/**********PWM_BL**********/
+&pwm8 {
+	status = "okay";
+	pinctrl-names = "active";
+};
+
 /**********I2C**********/
 /* I2C3_M1 */
 &i2c3 {
