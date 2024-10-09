@@ -111,9 +111,9 @@ todo
 
 ### 4.3 如何测试屏幕：
 
-1. 开启背光
+1. 调节背光
    ```bash
-   echo 1 > /sys/class/backlight/fb_st7789v/bl_power
+   echo 49 > /sys/class/backlight/backlight/brightness
    ```
 
 2. 测试花屏和清屏
