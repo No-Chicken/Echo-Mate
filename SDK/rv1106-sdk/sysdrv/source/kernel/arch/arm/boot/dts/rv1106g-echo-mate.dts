@@ -1,0 +1,129 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2022 Rockchip Electronics Co., Ltd.
+ */
+
+/dts-v1/;
+
+#include "rv1106.dtsi"
+#include "rv1106-evb.dtsi"
+#include "rv1106-echo-mate-ipc.dtsi"
+
+/ {
+	model = "Echo Mate";
+	compatible = "rockchip,rv1103g-38x38-ipc-v10", "rockchip,rv1106";
+};
+
+/**********FLASH**********/
+&sfc {
+	status = "okay";
+	flash@0 {
+		compatible = "spi-nand";
+		reg = <0>;
+		spi-max-frequency = <75000000>;
+		spi-rx-bus-width = <4>;
+		spi-tx-bus-width = <1>;
+	};
+	
+};
+
+/**********SDMMC**********/
+&sdmmc {
+	max-frequency = <50000000>;
+	no-sdio;
+	no-mmc;
+	bus-width = <4>;
+	cap-mmc-highspeed;
+	cap-sd-highspeed;
+	disable-wp;
+	pinctrl-names = "default";
+	pinctrl-0 = <&sdmmc0_clk &sdmmc0_cmd &sdmmc0_det &sdmmc0_bus4>;
+	status = "okay";
+};
+
+/***********mmc interface for wifi map to sdmmc1 set for sdio mode**********/
+&sdio {
+	max-frequency = <50000000>; // 最大运行频率不超过 150Mhz; SDIO2.0 卡最大 50M，SDIO3.0 最大支持 150M
+	bus-width = <4>;             // 4线数据模式
+	cap-sd-highspeed;            // 此配置同 SD 卡功能，作为 SDIO 外设，也有区分是否为 highspeed 的 SDIO 外设。
+	cap-sdio-irq;                // 此配置标识该 SDIO 外设(通常是 Wifi)是否支持 sdio 中断
+	keep-power-in-suspend;       // 此配置表示是否支持睡眠不断电，请默认加入该选项。Wifi 一般都有深度唤醒的要求。
+	non-removable;               // 此项表示该插槽为不可移动设备且此项为 SDIO 设备必须添加项。
+	sd-uhs-sdr50;         
+	no-1-8-v;
+	supports-sdio;         // 标识此插槽为 SDIO 功能，为必须添加项。否则无法初始化 SDIO 外设。
+	pinctrl-names = "default";
+	pinctrl-0 = <&sdmmc1m0_clk &sdmmc1m0_cmd &sdmmc1m0_bus4>; // rv1106-pinctrl.dtsi
+	status = "okay";
+};
+
+/**********ETH**********/
+&gmac {
+	status = "disabled";
+};
+
+/**********USB**********/
+&usbdrd_dwc3 {
+	status = "okay";
+	dr_mode = "peripheral";
+};
+
+/**********SPI**********/
+/* SPI0_M0 */
+&spi0 {
+	status = "okay";
+	spidev@0 {
+		status = "disabled";
+		spi-max-frequency = <50000000>;
+	};
+	fbtft@0 {
+		spi-max-frequency = <50000000>;
+	};
+};
+
+/**********PWM_BL**********/
+&pwm9 {
+	status = "okay";
+	pinctrl-names = "active";
+};
+
+/**********I2C**********/
+/* I2C3_M1 */
+&i2c3 {
+	status = "okay";
+	clock-frequency = <100000>;
+    focaltech@38 { 
+		compatible = "focaltech,fts";	
+		reg = <0x38>;  					
+		interrupt-parent = <&gpio1>;				
+		interrupts = <RK_PC7 IRQ_TYPE_EDGE_FALLING>;
+		focaltech,reset-gpio = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;
+		focaltech,irq-gpio = <&gpio1 RK_PC7 IRQ_TYPE_LEVEL_LOW>; 
+
+		focaltech,max-touch-number = <5>;			
+		focaltech,display-coords =  <0 0 240 320>;
+	};
+};
+
+/* I2C1_M1 */
+&i2c1 {
+	status = "disabled";
+	clock-frequency = <100000>;
+};
+
+
+/**********UART**********/
+/* UART3_M1 */
+&uart3 {
+	status = "disabled";
+};
+
+/* UART4_M1 */
+&uart4 {
+	status = "disabled";
+};
+
+/**********RTC**********/
+&rtc {
+	status = "okay";
+};
