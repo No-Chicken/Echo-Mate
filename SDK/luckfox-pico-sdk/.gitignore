@@ -1,7 +1,0 @@
-# *.o
-.vscode
-.BoardConfig.mk
-RK-RELEASE-NOTES-V1.4.1.txt
-IMAGE/
-output/
-config/

@@ -1,1 +1,0 @@
-#define DRIVER_VER  20811

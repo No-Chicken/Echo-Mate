@@ -1,0 +1,91 @@
+#include "WebsocketClient.h"
+#include "StateMachine.h"
+#include "AudioProcess.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+int main() {
+    // 定义地址、端口和鉴权头
+    std::string address = "192.168.211.1";
+    int port = 8765;
+    std::string token = "123456";
+    std::string deviceId = "00:11:22:33:44:55";
+    std::string protocolVersion = "1";
+
+    // 创建 WebSocketClient 实例
+    WebSocketClient ws_client(address, port, token, deviceId, protocolVersion);
+
+    // 设置接收到消息的回调函数
+    ws_client.SetMessageCallback([&ws_client](const std::string& message) {
+        ws_client.Log("Received message: " + message); // 使用 ws_client 的 Log 方法
+    });
+
+    // 创建一个线程来连接服务器
+    std::thread ws_thread([&ws_client]() {
+        ws_client.Connect();
+    });
+    
+    while(!ws_client.IsConnected()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        ws_client.Log("Waiting for connection...");
+    }
+
+    if(ws_client.IsConnected())
+    {
+
+        // 发送 JSON 消息
+        std::string json_message = R"({
+            "type": "hello",
+            "audio_params": {
+                "format": "opus",
+                "sample_rate": 16000,
+                "channels": 1
+                "sample_rate": 16000,
+                "channels": 1  
+            }
+        })";
+
+        ws_client.SendText(json_message);
+
+        // 让主线程继续工作，保持程序运行
+        // while (true) {
+        //     // 可以在这里添加其他代码
+        //     std::this_thread::sleep_for(std::chrono::seconds(5)); // 假设每5秒发送一次消息
+
+        //     // 发送另一条消息
+        //     std::string another_message = R"({"type": "heartbeat"})";
+        //     ws_client.SendText(another_message);
+        // }
+
+        AudioProcess audio_process;
+        // 加载本地音频文件
+        std::vector<int16_t> audio_data;
+        if (!audio_process.loadAudioFromFile("path/to/audio/file.pcm", audio_data)) {
+            std::cerr << "Failed to load audio file." << std::endl;
+            return -1;
+        }
+        auto encoded_segments = audio_process.encodeSegments(audio_data);
+        for (const auto& encoded_frame : encoded_segments) {
+            // 定义 BinaryProtocol 的 header 部分
+            BinaryProtocol header;
+            header.type = 0;  // 0 表示音频数据类型
+            header.timestamp = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count() / 1000);
+            header.payload_size = encoded_frame.size();
+
+            // 创建完整的发送缓冲区，包含 header 和 payload
+            std::vector<uint8_t> buffer(sizeof(BinaryProtocol) + encoded_frame.size());
+            std::memcpy(buffer.data(), &header, sizeof(BinaryProtocol));
+            std::memcpy(buffer.data() + sizeof(BinaryProtocol), encoded_frame.data(), encoded_frame.size());
+
+            // 通过 WebSocket 发送二进制数据
+            ws_client.SendBinary(buffer.data(), buffer.size());
+
+            audio_process.Log("Sent encoded frame of size: " + std::to_string(encoded_frame.size()), audio_process.INFO);
+        }
+    }
+    // 等待 WebSocket 线程结束
+    ws_thread.join();
+
+    return 0;
+}
