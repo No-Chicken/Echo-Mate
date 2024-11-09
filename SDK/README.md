@@ -130,7 +130,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    ./build.sh 
    ```
 
-3. `<SDK目录>/build.sh`全部可用选项：
+3. 可自行查阅`<SDK目录>/build.sh`全部可用选项：
 
    ```shell
    Usage: build.sh [OPTIONS]
@@ -163,7 +163,6 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
       	<img border="1px" width="75%" src="./assets/烧录SD.jpg">
 </p>
 
-</br>
 
 ### 5.2 NAND Flash烧录
 
