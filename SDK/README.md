@@ -4,13 +4,9 @@
 
 ## :ledger: 1. 获取SDK
 
-你可以使用luckfox的原始仓库的SDK，但是需要改一些东西，例如：`.dts`, `.mk`,  `build.sh`, `insmod_wifi.sh`, `kernal config`, `buildroot config`等，luckfox的获取如下：
+你可以使用luckfox的仓库的SDK，但是需要自行改一些东西，例如：`.dts`, `.mk`,  `build.sh`, `insmod_wifi.sh`, `kernal config`, `buildroot config`等
 
-```shell
-git clone https://github.com/LuckfoxTECH/luckfox-pico.git
-```
-
-当然你也可以直接使用本仓库改好的SDK，如下：
+推荐直接使用本仓库改好的SDK，如下：
 
 ```shell
 git clone https://github.com/No-Chicken/Echo-Mate.git
@@ -27,7 +23,9 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 </br>
 
-## :black_nib: 3. 更改luckfox原始SDK示例
+<details>
+<summary><h2>✒️3. 更改luckfox原始SDK示例</h2></summary>
+
 
 ### 注：使用本仓库改过的SDK可跳过以下操作：
 
@@ -114,13 +112,13 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    make savedefconfig
    ```
 
+</details>
+
 </br>
 
 ## 🔨4. 编译
 
-最好详细查看luckfox的README文档。
-
-1. 首先需要在SDK文件夹选择板级配置，这里选择`[7]custom`，会弹出所有的`.mk`文件，选择echo mate的配置即可，当然你也可以选择直接用改过的原配置文件
+1. 首先需要在SDK文件夹选择板级配置，这里选择对应的开发板，选择echo mate的配置即可。如果使用`[7]custom`，会弹出所有的`.mk`文件。
 
    ```shell
    ./build.sh lunch
@@ -143,41 +141,14 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    uboot              -build uboot
    kernel             -build kernel
    rootfs             -build rootfs
-   driver             -build kernel's drivers
-   sysdrv             -build uboot, kernel, rootfs
-   media              -build rockchip media libraries
-   app                -build app
-   recovery           -build recovery
-   tool               -build tool
-   updateimg          -build update image
-   unpackimg          -unpack update image
-   factory            -build factory image
-   all                -build uboot, kernel, rootfs, recovery image
-   allsave            -build all & firmware & save
-   
-   clean              -clean all
-   clean uboot        -clean uboot
-   clean kernel       -clean kernel
-   clean driver       -clean driver
-   clean rootfs       -clean rootfs
-   clean sysdrv       -clean uboot/kernel/rootfs
-   clean media        -clean rockchip media libraries
-   clean app          -clean app
-   clean recovery     -clean recovery
-   
-   firmware           -pack all the image we need to boot up system
-   ota                -pack update_ota.tar
-   save               -save images, patches, commands used to debug
-   check              -check the environment of building
-   info               -see the current board building information
-   
-   buildrootconfig    -config buildroot and save defconfig"
-   kernelconfig       -config kernel and save defconfig"
+   ...
    ```
 
 </br>
 
 ## 📥5. 烧录
+
+### 5.1 SD卡烧录
 
 1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1106
 
@@ -186,14 +157,14 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 </p>
 
 
-
-2. 把output中的镜像文件如下，烧录到空白的SD卡。SD卡格式化可以使用`SD Card Formatter`。
+2. 把output中的镜像文件如下，烧录到空白的SD卡. SD卡格式化可以使用`SD Card Formatter`。
 
 <p align="center">
       	<img border="1px" width="75%" src="./assets/烧录SD.jpg">
 </p>
 
-
 </br>
 
+### 5.2 NAND Flash烧录
 
+1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1106

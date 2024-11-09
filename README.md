@@ -28,7 +28,7 @@ todo
 
 ## 4. 开发板使用
 
-注：登录账号和密码，改过的SDK都设置为了`root`，如果需要改密码，除了常规的在buildroot deconfig里面更改，还需要在 <luckfox-sdk>/sysdrv/tools/board/buildroot/shadow_defconfig修改你的密码计算哈希值，再编译。
+注：登录账号和密码，改过的SDK都设置为了`root`，如果需要改密码，除了常规的在buildroot deconfig里面更改，还需要在 <rv1106-sdk>/sysdrv/tools/board/buildroot/shadow_defconfig修改你的密码计算哈希值，再编译。
 
 
 ### 4.1 如何使用WIFI：
@@ -47,7 +47,7 @@ todo
    update_config=1
    
    network={
-           ssid="luckfox"
+           ssid="wifi-name"
            psk="12345678"
            key_mgmt=WPA-PSK
    }
