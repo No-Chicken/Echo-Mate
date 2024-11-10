@@ -55,7 +55,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    	<img border="1px" width="60%" src="./assets/kernel config-rtl8723.jpg">
    </p>
 
-   然后保存
+   设置完，然后保存
 
    ```shell
    make ARCH=arm savedefconfig
@@ -68,7 +68,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    make echo_mate_defconfig
    make menuconfig
    ```
-   设置完后，再保存
+   设置完，然后保存
    ```shell
    make savedefconfig
    ```
@@ -104,6 +104,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    rootfs             -build rootfs
    ...
    ```
+4. 如果网络不好，可以尝试换buildroot换源
 
 </br>
 
