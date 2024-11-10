@@ -24,91 +24,52 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 </br>
 
 <details>
-<summary><h2>✒️3. 更改luckfox原始SDK示例</h2></summary>
+<summary><h2>✒️3. 更改SDK示例</h2></summary>
 
 
-### 注：使用本仓库改过的SDK可跳过以下操作：
+### 注：不需要改可跳过以下操作：
 
-1. 首先需要修改设备树，因为需要使用到wifi以方便用户ssh或者连wifi运行demo，修改`<SDK路径>/sysdrv/source/kernel/arch/arm/boot/dts/rv1106g-luckfox-pico-pro-max.dts`
-
-   ```dts
-   /***********mmc interface for wifi map to sdmmc1 set for sdio mode**********/
-   &sdio {
-   	max-frequency = <50000000>; // 最大运行频率不超过 150Mhz; SDIO2.0 卡最大 50M，SDIO3.0 最大支持 150M
-   	bus-width = <4>;             // 4线数据模式
-   	cap-sd-highspeed;            // 此配置同 SD 卡功能，作为 SDIO 外设，也有区分是否为 highspeed 的 SDIO 外设。
-   	cap-sdio-irq;                // 此配置标识该 SDIO 外设(通常是 Wifi)是否支持 sdio 中断
-   	keep-power-in-suspend;       // 此配置表示是否支持睡眠不断电，请默认加入该选项。Wifi 一般都有深度唤醒的要求。
-   	non-removable;               // 此项表示该插槽为不可移动设备且此项为 SDIO 设备必须添加项。
-   	sd-uhs-sdr50;         
-   	no-1-8-v;
-   	supports-sdio;         // 标识此插槽为 SDIO 功能，为必须添加项。否则无法初始化 SDIO 外设。
-   	pinctrl-names = "default";
-   	pinctrl-0 = <&sdmmc1m1_clk &sdmmc1m1_cmd &sdmmc1m1_bus4>; // rv1106-pinctrl.dtsi
-   	status = "okay";
-   };
+1. SDK目录如下
+   ```
+   ├── build.sh -> project/build.sh ---- SDK编译脚本
+   ├── media --------------------------- 多媒体编解码、ISP等算法相关（可独立SDK编译）
+   ├── sysdrv -------------------------- U-Boot、kernel、rootfs目录（可独立SDK编译）
+   ├── project ------------------------- 参考应用、编译配置以及脚本目录
+   ├── output -------------------------- SDK编译后镜像文件存放目录
+   └── tools --------------------------- 烧录镜像打包工具以及烧录工具
    ```
 
-2. 板载配置需要使能WIFI，在`<SDK路径>/project/cfg/BoardConfig_IPC/BoardConfig-SD_CARD-Buildroot-RV1106_Luckfox_Pico_Pro_Max-IPC.mk`加入如下语句
+2. 设备树路径：`<SDK路径>/sysdrv/source/kernel/arch/arm/boot/dts/xxxx.dts`
 
-   ```sh
-   # enable external wifi module
-   export RK_ENABLE_WIFI=y
-   ```
 
-3. 在`<SDK路径>/build.sh`中，build_app函数中的构建和导出meta配置改为如下：
+3. 板载配置路径：`<SDK路径>/project/cfg/BoardConfig_IPC/BoardConfig-SD_CARD-Buildroot-RV1106_Echo_Mate-DeskMate.mk`
 
-   ```sh
-   function build_app() {
-   	# ......
-   	# 省略前面
-   	echo "============Start building app============"
-   	echo "TARGET_APP_CONFIG=$RK_APP_DEFCONFIG $RK_APP_DEFCONFIG_FRAGMENT $RK_APP_TYPE"
-   	echo "========================================="
-   
-   	# build_meta --export # export meta header files
-   	build_meta --export --media_dir $RK_PROJECT_PATH_MEDIA # for rtl8723bs
-   	test -d ${SDK_APP_DIR} && make -C ${SDK_APP_DIR}
-   
-   	finish_build
-   }
-   ```
 
-4. 修改`<SDK路径>/sysdrv/drv_ko/wifi/insmod_wifi.sh`，这个是会自动导入到开发板的文件系统中的，用于安装wifi的mod，在里面加入rtl8723bs的安装：
-
-   ```sh
-   # rtl8723bs
-   cat /sys/bus/sdio/devices/*/uevent | grep "024C:B723"
-   if [ $? -eq 0 ];then
-   	insmod  cfg80211.ko
-   	insmod  r8723bs.ko
-   fi
-   ```
-
-5. 在`<SDK路径>/`下加入`external`文件夹放置rtl8723的bin文件，详见本仓库的加入的东西，直接复制即可；
-
-6. 进入`<SDK路径>/sysdrv/source/kernel`，修改`kernel config`，需要使能rtl8723的drive
+4. 配置kernel设置：`<SDK路径>/sysdrv/source/kernel`，修改`kernel config`
 
    ```shell
+   cp ./arch/arm/configs/echo_rv1106_linux_defconfig .config
    make ARCH=arm menuconfig
    ```
-
-7. <p align="center">
+   <p align="center">
    	<img border="1px" width="60%" src="./assets/kernel config-rtl8723.jpg">
    </p>
-
-   
 
    然后保存
 
    ```shell
    make ARCH=arm savedefconfig
+   cp defconfig ./arch/arm/configs/echo_rv1106_linux_defconfig
    ```
 
-8. 修改`buildroot config`，加入你需要的包，例如`iftop`，`wpa_supplicant`等同样也是设置再保存
+5. 配置buildroot设置：修改`buildroot config`，加入你需要的包，例如`iftop`，`wpa_supplicant`，
 
    ```shell
+   make echo_mate_defconfig
    make menuconfig
+   ```
+   设置完后，再保存
+   ```shell
    make savedefconfig
    ```
 
