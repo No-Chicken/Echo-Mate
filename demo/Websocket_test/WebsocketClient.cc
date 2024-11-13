@@ -57,6 +57,25 @@ void WebSocketClient::SendBinary(const uint8_t* data, size_t size) {
     ws_client_.send(connection_hdl_, data, size, websocketpp::frame::opcode::binary);
 }
 
+WebSocketClient::BinProtocol* WebSocketClient::PackBinFrame(const uint8_t* payload, size_t payload_size) {
+
+    // Allocate memory for BinaryProtocol + payload
+    auto pack = (WebSocketClient::BinProtocol*)malloc(sizeof(WebSocketClient::BinProtocol) + payload_size);
+    if (!pack) {
+        std::cerr << "Memory allocation failed" << std::endl;
+        return nullptr;
+    }
+    
+    pack->version = htons(1);
+    pack->type = htons(0);  // Indicate audio data type
+    pack->payload_size = htonl(payload_size);
+    assert(sizeof(BinProtocol) == 8);
+    
+    // Copy payload data
+    memcpy(pack->payload, payload, payload_size);
+    
+    return pack;
+}
 
 // 设置消息回调
 void WebSocketClient::SetMessageCallback(message_callback_t callback) {

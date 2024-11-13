@@ -31,7 +31,7 @@ link_directories(
 # Add the source files
 add_executable(EchoBrian
     main.cc
-    #AudioProcess.cc
+    AudioProcess.cc
     WebsocketClient.cc
 )
 

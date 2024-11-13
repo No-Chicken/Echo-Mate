@@ -14,7 +14,7 @@ AudioProcess::~AudioProcess() {
 
 void AudioProcess::Log(const std::string& message, LogLevel level) {
     std::string prefix = (level == ERROR) ? "[ERROR] " : "[INFO] ";
-    std::cout << "[AudioProcess] " << prefix << message << std::endl;
+    std::cout << "[AudioProcess]" << prefix << message << std::endl;
 }
 
 bool AudioProcess::initializeOpus() {
@@ -62,69 +62,93 @@ std::vector<int16_t> AudioProcess::getRecordedAudio() {
     return {};  // 返回实际录音数据
 }
 
-// 读取音频文件
-bool AudioProcess::loadAudioFromFile(const std::string& filename, std::vector<int16_t>& audio_data) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {
-        Log("Failed to open audio file: " + filename, ERROR);
+std::queue<std::vector<int16_t>> AudioProcess::loadAudioFromFile(const std::string& filename, int frame_duration_ms) {
+    std::ifstream infile(filename, std::ios::binary);
+    if (!infile) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return {};
+    }
+
+    // 获取文件大小
+    infile.seekg(0, std::ios::end);
+    std::streampos fileSize = infile.tellg();
+    infile.seekg(0, std::ios::beg);
+
+    // 计算样本数量
+    size_t numSamples = static_cast<size_t>(fileSize) / sizeof(int16_t);
+
+    // 读取音频数据
+    std::vector<int16_t> audio_data(numSamples);
+    infile.read(reinterpret_cast<char*>(audio_data.data()), fileSize);
+
+    if (!infile) {
+        std::cerr << "Error reading file: " << filename << std::endl;
+        return {};
+    }
+
+    // 计算每帧的样本数量
+    int frame_size = sample_rate / 1000 * frame_duration_ms;
+
+    // 将音频数据切分成帧
+    std::queue<std::vector<int16_t>> audio_frames;
+    for (size_t i = 0; i < numSamples; i += frame_size) {
+        size_t remaining_samples = numSamples - i;
+        size_t current_frame_size = (remaining_samples > frame_size) ? frame_size : remaining_samples;
+
+        std::vector<int16_t> frame(current_frame_size);
+        std::copy(audio_data.begin() + i, audio_data.begin() + i + current_frame_size, frame.begin());
+        audio_frames.push(frame);
+    }
+
+    return audio_frames;
+}
+
+
+bool AudioProcess::encode(const std::vector<int16_t>& pcm_frame, uint8_t* opus_data, size_t& opus_data_size) {
+
+    if (!encoder) {
+        Log("encoder not init", ERROR);
         return false;
     }
 
-    // 读取 PCM 数据到 audio_data
-    file.seekg(0, std::ios::end);
-    size_t file_size = file.tellg();
-    file.seekg(0, std::ios::beg);
+    int frame_size = pcm_frame.size();
 
-    audio_data.resize(file_size / sizeof(int16_t));
-    file.read(reinterpret_cast<char*>(audio_data.data()), file_size);
-    file.close();
-
-    Log("Loaded audio file successfully: " + filename, INFO);
-    return true;
-}
-
-std::vector<std::vector<uint8_t>> AudioProcess::encodeSegments(const std::vector<int16_t>& pcm_data) {
-
-    std::vector<std::vector<uint8_t>> encoded_segments;
-    int frame_size = 20;  // 帧大小，单位为毫秒
-
-    size_t num_frames = pcm_data.size() / frame_size;
-
-    for (size_t i = 0; i < num_frames; ++i) {
-        // 为当前帧准备数据
-        const int16_t* frame_data = pcm_data.data() + i * frame_size;
-
-        // 创建存储编码后的数据的缓冲区
-        std::vector<uint8_t> encoded_data(frame_size);  // 预分配缓冲区
-
-        // 对当前帧进行编码
-        int encoded_bytes = opus_encode(encoder, frame_data, frame_size, encoded_data.data(), encoded_data.size());
-
-        if (encoded_bytes < 0) {
-            Log("Encoding failed at frame " + std::to_string(i) + ": " + std::string(opus_strerror(encoded_bytes)), ERROR);
-            continue;  // 跳过失败的帧
-        }
-
-        // 调整编码数据的大小为实际编码的字节数
-        encoded_data.resize(encoded_bytes);
-        encoded_segments.push_back(encoded_data);
-
-        Log("Frame " + std::to_string(i) + " encoded successfully. Encoded bytes: " + std::to_string(encoded_bytes), INFO);
+    if (frame_size <= 0) {
+        Log("Invalid PCM frame size: " + std::to_string(frame_size), ERROR);
+        return false;
     }
 
-    return encoded_segments;
+    // 对当前帧进行编码
+    int encoded_bytes_size = opus_encode(encoder, pcm_frame.data(), frame_size, opus_data, 2048); //max 2048 bytes
+
+    if (encoded_bytes_size < 0) {
+        Log("Encoding failed: " + std::string(opus_strerror(encoded_bytes_size)), ERROR);
+        return false;
+    }
+
+    opus_data_size = static_cast<size_t>(encoded_bytes_size);
+    return true;
+    
 }
 
 
-std::vector<int16_t> AudioProcess::decode(const std::vector<uint8_t>& encoded_data) {
-    std::vector<int16_t> pcm_data(4096);  // 大小根据帧大小调整
-    int decoded_samples = opus_decode(decoder, encoded_data.data(), encoded_data.size(), pcm_data.data(), pcm_data.size(), 0);
+bool AudioProcess::decode(const uint8_t* opus_data, size_t opus_data_size, std::vector<int16_t>& pcm_frame) {
+    if (!decoder) {
+        Log("Decoder not initialized", ERROR);
+        return false;
+    }
+
+    int frame_size = 960;  // 20ms 帧, 16000Hz 采样率, 理论上应该是 320 个样本，但是 Opus 限制为 960
+    pcm_frame.resize(frame_size * channels);
+
+    // 对当前帧进行解码
+    int decoded_samples = opus_decode(decoder, opus_data, static_cast<int>(opus_data_size), pcm_frame.data(), frame_size, 0);
 
     if (decoded_samples < 0) {
         Log("Decoding failed: " + std::string(opus_strerror(decoded_samples)), ERROR);
-        return {};
+        return false;
     }
-    pcm_data.resize(decoded_samples * channels);
-    Log("Decoding completed successfully.", INFO);
-    return pcm_data;
+
+    pcm_frame.resize(decoded_samples * channels);
+    return true;
 }

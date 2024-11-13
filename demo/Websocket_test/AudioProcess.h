@@ -2,10 +2,12 @@
 #define AUDIOPROCESS_H
 
 #include <vector>
+#include <queue>
 #include <mutex>
 #include <condition_variable>
 #include <opus/opus.h>
 #include <cstdint>
+
 
 class AudioProcess {
 public:
@@ -21,11 +23,13 @@ public:
     std::vector<int16_t> getRecordedAudio();
 
     // 读取本地音频
-    bool loadAudioFromFile(const std::string& filename, std::vector<int16_t>& audio_data);
+    std::queue<std::vector<int16_t>> loadAudioFromFile(const std::string& filename, int frame_duration_ms);
 
-    // 编码和解码
-    std::vector<std::vector<uint8_t>> AudioProcess::encodeSegments(const std::vector<int16_t>& pcm_data);
-    std::vector<int16_t> decode(const std::vector<uint8_t>& encoded_data);
+    // 编码
+    bool encode(const std::vector<int16_t>& pcm_frame, uint8_t* opus_data, size_t& opus_data_size);
+
+    // 解码
+    bool decode(const uint8_t* opus_data, size_t opus_data_size, std::vector<int16_t>& pcm_frame);
 
 private:
 

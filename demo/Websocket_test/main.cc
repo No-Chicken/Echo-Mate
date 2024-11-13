@@ -4,6 +4,8 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <fstream>
+
 
 int main() {
     // 定义地址、端口和鉴权头
@@ -34,15 +36,14 @@ int main() {
     if(ws_client.IsConnected())
     {
 
-        // 发送 JSON 消息
-        std::string json_message = R"({
+        //
+        std::string json_message = 
+        R"({
             "type": "hello",
             "audio_params": {
                 "format": "opus",
                 "sample_rate": 16000,
                 "channels": 1
-                "sample_rate": 16000,
-                "channels": 1  
             }
         })";
 
@@ -58,31 +59,6 @@ int main() {
         //     ws_client.SendText(another_message);
         // }
 
-        AudioProcess audio_process;
-        // 加载本地音频文件
-        std::vector<int16_t> audio_data;
-        if (!audio_process.loadAudioFromFile("path/to/audio/file.pcm", audio_data)) {
-            std::cerr << "Failed to load audio file." << std::endl;
-            return -1;
-        }
-        auto encoded_segments = audio_process.encodeSegments(audio_data);
-        for (const auto& encoded_frame : encoded_segments) {
-            // 定义 BinaryProtocol 的 header 部分
-            BinaryProtocol header;
-            header.type = 0;  // 0 表示音频数据类型
-            header.timestamp = static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count() / 1000);
-            header.payload_size = encoded_frame.size();
-
-            // 创建完整的发送缓冲区，包含 header 和 payload
-            std::vector<uint8_t> buffer(sizeof(BinaryProtocol) + encoded_frame.size());
-            std::memcpy(buffer.data(), &header, sizeof(BinaryProtocol));
-            std::memcpy(buffer.data() + sizeof(BinaryProtocol), encoded_frame.data(), encoded_frame.size());
-
-            // 通过 WebSocket 发送二进制数据
-            ws_client.SendBinary(buffer.data(), buffer.size());
-
-            audio_process.Log("Sent encoded frame of size: " + std::to_string(encoded_frame.size()), audio_process.INFO);
-        }
     }
     // 等待 WebSocket 线程结束
     ws_thread.join();
