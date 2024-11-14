@@ -15,6 +15,10 @@ int main() {
     std::string deviceId = "00:11:22:33:44:55";
     std::string protocolVersion = "1";
 
+    int sample_rate = 16000;
+    int channels = 1;
+    int frame_duration = 20;
+
     // 创建 WebSocketClient 实例
     WebSocketClient ws_client(address, port, token, deviceId, protocolVersion);
 
@@ -42,22 +46,13 @@ int main() {
             "type": "hello",
             "audio_params": {
                 "format": "opus",
-                "sample_rate": 16000,
-                "channels": 1
+                "sample_rate": )" + std::to_string(sample_rate) + R"(,
+                "channels": )" + std::to_string(channels) + R"(,
+                "frame_duration": )" + std::to_string(frame_duration) + R"(
             }
         })";
 
         ws_client.SendText(json_message);
-
-        // 让主线程继续工作，保持程序运行
-        // while (true) {
-        //     // 可以在这里添加其他代码
-        //     std::this_thread::sleep_for(std::chrono::seconds(5)); // 假设每5秒发送一次消息
-
-        //     // 发送另一条消息
-        //     std::string another_message = R"({"type": "heartbeat"})";
-        //     ws_client.SendText(another_message);
-        // }
 
     }
     // 等待 WebSocket 线程结束

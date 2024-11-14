@@ -7,7 +7,7 @@
 #include <condition_variable>
 #include <opus/opus.h>
 #include <cstdint>
-
+#include "WebsocketClient.h"
 
 class AudioProcess {
 public:
@@ -30,6 +30,9 @@ public:
 
     // 解码
     bool decode(const uint8_t* opus_data, size_t opus_data_size, std::vector<int16_t>& pcm_frame);
+
+    // 打包音频帧为定义的二进制协议
+    BinProtocol* PackBinFrame(const uint8_t* payload, size_t payload_size);
 
 private:
 
