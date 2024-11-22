@@ -82,7 +82,7 @@
 
 &acodec {
 	#sound-dai-cells = <0>;
-	pa-ctl-gpios = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
+	pa-ctl-gpios = <&gpio0 RK_PA2 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
 /***************************** CPU ********************************/
