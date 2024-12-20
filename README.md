@@ -14,6 +14,13 @@
 
 ```shell
 git clone https://github.com/No-Chicken/Echo-Mate.git
+cd Echo-Mate
+git submodule update --init --recursive
+```
+如果要更新子模块，请执行：
+
+```shell
+git submodule update --remote --merge --recursive
 ```
 
 SDK开发环境与系统配置详见SDK文件夹中的[README.md](./SDK/README.md).
