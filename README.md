@@ -17,7 +17,7 @@ git clone https://github.com/No-Chicken/Echo-Mate.git
 cd Echo-Mate
 git submodule update --init --recursive
 ```
-如果要更新子模块，请执行：
+如果要递归更新所有子模块，请执行：
 
 ```shell
 git submodule update --remote --merge --recursive
