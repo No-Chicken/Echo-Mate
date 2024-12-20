@@ -1,3 +1,4 @@
 [submodule "Demo"]
 	path = Demo
 	url = https://github.com/No-Chicken/Demo4Echo.git
+	branch = main
