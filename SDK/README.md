@@ -104,7 +104,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
    rootfs             -build rootfs
    ...
    ```
-4. 如果网络不好，可以尝试换buildroot换源
+4. 如果网络不好，可以尝试换buildroot换源, 或直接手动下载包到dl文件夹
 
 </br>
 
