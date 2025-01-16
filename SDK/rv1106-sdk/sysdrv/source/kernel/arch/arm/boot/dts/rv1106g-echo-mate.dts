@@ -102,6 +102,7 @@
 
 		focaltech,max-touch-number = <5>;			
 		focaltech,display-coords =  <0 0 240 320>;
+		focaltech,rotate = <90>;
 	};
 };
 

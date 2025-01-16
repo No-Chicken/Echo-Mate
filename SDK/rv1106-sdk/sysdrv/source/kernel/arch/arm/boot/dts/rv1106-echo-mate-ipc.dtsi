@@ -312,7 +312,7 @@
 		fps = <60>;
 		buswidth = <8>;
 		debug = <0x7>;
-		rotate = <0>;
+		rotate = <90>;
 		//bgr = <1>;	//RGB->BGR
 		//led-gpios = <&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>;		//BL
 		dc-gpios = <&gpio1 RK_PD0 GPIO_ACTIVE_HIGH>;		//DC
