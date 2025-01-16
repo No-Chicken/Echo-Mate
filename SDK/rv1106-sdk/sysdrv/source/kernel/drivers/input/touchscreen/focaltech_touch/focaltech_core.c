@@ -622,6 +622,11 @@ static int fts_input_report_b(struct fts_ts_data *data)
     bool va_reported = false;
     u32 max_touch_num = data->pdata->max_touch_number;
     u32 key_y_coor = data->pdata->key_y_coord;
+    u32 rotate = data->pdata->rotate;
+    u32 x_max = data->pdata->x_max;
+    u32 y_max = data->pdata->y_max;
+    u32 orig_x;
+    u32 orig_y;
     struct ts_event *events = data->events;
 
     for (i = 0; i < data->touch_point; i++) {
@@ -652,6 +657,25 @@ static int fts_input_report_b(struct fts_ts_data *data)
         swap(events[i].x,events[i].y);
 #endif /* CFG_CTS_SWAP_XY */
 
+            orig_x = events[i].x;
+            orig_y = events[i].y;
+
+            switch (rotate) {
+                case 90:
+                    events[i].x = y_max - orig_y;
+                    events[i].y = orig_x;
+                    break;
+                case 180:
+                    events[i].x = x_max - orig_x;
+                    events[i].y = y_max - orig_y;
+                    break;
+                case 270:
+                    events[i].x = orig_y;
+                    events[i].y = x_max - orig_x;
+                    break;
+                default: // 0 or invalid rotation, do nothing
+                    break;
+            }
 		
             input_report_abs(data->input_dev, ABS_MT_TOUCH_MAJOR, events[i].area);
 #if 0
@@ -994,10 +1018,17 @@ static int fts_input_init(struct fts_ts_data *ts_data)
     input_set_abs_params(input_dev, ABS_MT_POSITION_Y,
             0, pdata->x_max, 0, 0);
 #else /* CFG_CTS_SWAP_XY */
-    input_set_abs_params(input_dev, ABS_MT_POSITION_X,
-            0, pdata->x_max, 0, 0);
-    input_set_abs_params(input_dev, ABS_MT_POSITION_Y,
+    if(pdata->rotate == 90 || pdata->rotate == 270) {
+        input_set_abs_params(input_dev, ABS_MT_POSITION_X,
             0, pdata->y_max, 0, 0);
+        input_set_abs_params(input_dev, ABS_MT_POSITION_Y,
+            0, pdata->x_max, 0, 0);
+    } else {
+        input_set_abs_params(input_dev, ABS_MT_POSITION_X,
+            0, pdata->x_max, 0, 0);
+        input_set_abs_params(input_dev, ABS_MT_POSITION_Y,
+            0, pdata->y_max, 0, 0);
+    }
 #endif /* CFG_CTS_SWAP_XY */
     input_set_abs_params(input_dev, ABS_MT_TOUCH_MAJOR, 0, 0xFF, 0, 0);
 #if FTS_REPORT_PRESSURE_EN
@@ -1114,20 +1145,13 @@ err_irq_gpio_req:
 static int fts_get_dt_coords(struct device *dev, char *name,
                              struct fts_ts_platform_data *pdata)
 {
-    //int ret = 0;
-    //u32 coords[FTS_COORDS_ARR_SIZE] = { 0 };
-    //struct property *prop;
-    //struct device_node *np = dev->of_node;
-    //int coords_size;
+    int ret = 0;
+    u32 coords[FTS_COORDS_ARR_SIZE] = { 0 };
+    struct property *prop;
+    struct device_node *np = dev->of_node;
+    int coords_size;
 
-	pdata->x_min = FTS_X_MIN_DISPLAY_DEFAULT;
-	pdata->y_min = FTS_Y_MIN_DISPLAY_DEFAULT;
-	pdata->x_max = FTS_X_MAX_DISPLAY_DEFAULT;
-	pdata->y_max = FTS_Y_MAX_DISPLAY_DEFAULT;
-	
-	
-	
-    /*prop = of_find_property(np, name, NULL);
+    prop = of_find_property(np, name, NULL);
     if (!prop)
         return -EINVAL;
     if (!prop->value)
@@ -1140,28 +1164,22 @@ static int fts_get_dt_coords(struct device *dev, char *name,
     }
 
     ret = of_property_read_u32_array(np, name, coords, coords_size);
-    if (ret && (ret != -EINVAL)) {
-        FTS_ERROR("Unable to read %s", name);
-        return -ENODATA;
-    }
-
-    if (!strcmp(name, "focaltech,display-coords")) {
-        pdata->x_min = coords[0];
-        pdata->y_min = coords[1];
-        pdata->x_max = coords[2];
-        pdata->y_max = coords[3];
-    } else {
-        FTS_ERROR("unsupported property %s", name);
+    if (ret < 0) {
+        FTS_ERROR("Unable to read %s, please check dts", name);
         pdata->x_min = FTS_X_MIN_DISPLAY_DEFAULT;
         pdata->y_min = FTS_Y_MIN_DISPLAY_DEFAULT;
         pdata->x_max = FTS_X_MAX_DISPLAY_DEFAULT;
         pdata->y_max = FTS_Y_MAX_DISPLAY_DEFAULT;
-       // return -EINVAL;
+        return -ENODATA;
+    } else {
+        pdata->x_min = coords[0];
+        pdata->y_min = coords[1];
+        pdata->x_max = coords[2];
+        pdata->y_max = coords[3];
     }
-*/
-    printk("display x(%d %d) y(%d %d)", pdata->x_min, pdata->x_max, pdata->y_min, pdata->y_max);
-    /*FTS_INFO("display x(%d %d) y(%d %d)", pdata->x_min, pdata->x_max,
-             pdata->y_min, pdata->y_max);*/
+
+    FTS_INFO("display x(%d %d) y(%d %d)", pdata->x_min, pdata->x_max,
+             pdata->y_min, pdata->y_max);
     return 0;
 }
 
@@ -1235,6 +1253,31 @@ static int fts_parse_dt(struct device *dev, struct fts_ts_platform_data *pdata)
 
     FTS_INFO("max touch number:%d, irq gpio:%d, reset gpio:%d",
              pdata->max_touch_number, pdata->irq_gpio, pdata->reset_gpio);
+
+    ret = of_property_read_u32(np, "focaltech,rotate", &temp_val);
+    if (ret) {
+        FTS_ERROR("Unable to get rotate value, use default 0");
+        temp_val = 0; /* 如果获取失败，默认使用0 */
+    } else {
+        /* 检查旋转角度是否有效 */
+        switch (temp_val) {
+            case 0:
+            case 90:
+            case 180:
+            case 270:
+                /* 有效值，不做处理 */
+                break;
+            default:
+                FTS_ERROR("Invalid rotate value: %u, set to default 0", temp_val);
+                temp_val = 0; /* 设置为默认值 */
+                break;
+        }
+    }
+
+    /* 将旋转角度赋值给pdata */
+    pdata->rotate = temp_val;
+
+    FTS_INFO("Rotate value: %d", pdata->rotate);
 
     FTS_FUNC_EXIT();
     return 0;
