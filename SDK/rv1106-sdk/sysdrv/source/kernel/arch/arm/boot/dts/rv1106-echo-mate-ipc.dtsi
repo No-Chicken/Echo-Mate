@@ -72,6 +72,14 @@
     	default-brightness-level = <50>; 
 	};
 
+	gpio0pa4:gpio0pa4 {
+        compatible = "regulator-fixed";
+        pinctrl-names = "default";
+        pinctrl-0 = <&gpio0_pa4>;
+        regulator-name = "gpio0_pa4";
+        regulator-always-on;
+    };
+
 };
 
 /***************************** AUDIO ********************************/
@@ -401,9 +409,9 @@
 		};
 	};
 
-    gpio1-pc7 {
-        gpio1_pc7:gpio1-pc7 {
-            rockchip,pins = <1 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+    gpio0-pa4 {
+        gpio0_pa4:gpio0-pa4 {
+            rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
     	};
 	};
 };
