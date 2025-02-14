@@ -1,12 +1,26 @@
 #!/bin/sh
 
-echo_defconfig() {
-	
+# 设置音频配置的函数
+set_audio_config() {
+    # 设置 ADC HPF CUT-OFF 为 ON
+    amixer -c 0 cset name='ADC HPF Cut-off' 1
+
+    # 设置 ADC-MIC-RIGHT 为 mute 关闭
+    amixer -c 0 cset name='ADC MIC Right Switch' 1
+
+    # 设置 ADC Digital Left 为 46
+    amixer -c 0 cset name='ADC Digital right Volume' 211
+
+    # 设置 ADC ALC Left
+    amixer -c 0 cset name='ADC ALC Left Volume' 16
+
+	# 设置扬声器音量(0~30)
+	amixer -c 0 cset name='DAC LINEOUT Volume' 18
 }
 
 case $1 in
 start)
-	echo_defconfig
+	set_audio_config
 	;;
 *)
 	exit 1
