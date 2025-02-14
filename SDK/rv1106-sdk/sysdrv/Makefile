@@ -606,9 +606,10 @@ else
 	cp $(SYSDRV_DIR)/tools/board/buildroot/S99rtcinit $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 	cp $(SYSDRV_DIR)/tools/board/buildroot/S50sshd $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 	cp $(SYSDRV_DIR)/tools/board/buildroot/S99python $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
-	cp $(SYSDRV_DIR)/tools/board/luckfox_config/S99luckfoxconfigload $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
-	cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox-config  $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/
-	cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox_switch_rgb_resolution $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/
+	cp $(SYSDRV_DIR)/tools/board/echo_defconfig/S99echo_defconfig $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
+	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/S99luckfoxconfigload $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
+	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox-config  $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/
+	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox_switch_rgb_resolution $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/
 	cp $(SYSDRV_DIR)/tools/board/android-tools/S90usb0config $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 endif
 
@@ -633,10 +634,10 @@ ubuntu: prepare
 		rm $(SYSDRV_DIR_OUT_ROOTFS)/* -rf ;\
 		tar xzf $(SYSDRV_DIR)/tools/board/ubuntu/$(UBUNTU_VER).tar.gz -C $(SYSDRV_DIR_OUT_ROOTFS) ;\
 	);
-	cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox-config ${SYSDRV_DIR_OUT_ROOTFS}/usr/bin/
-	cp $(SYSDRV_DIR)/tools/board/luckfox_config/ubuntu/etc/* ${SYSDRV_DIR_OUT_ROOTFS}/etc/
-	cp $(SYSDRV_DIR)/tools/board/luckfox_config/ubuntu/usr/bin/* ${SYSDRV_DIR_OUT_ROOTFS}/usr/bin/
-	cp -d $(SYSDRV_DIR)/tools/board/luckfox_config/ubuntu/usr/lib/* ${SYSDRV_DIR_OUT_ROOTFS}/usr/lib/
+	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox-config ${SYSDRV_DIR_OUT_ROOTFS}/usr/bin/
+	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/ubuntu/etc/* ${SYSDRV_DIR_OUT_ROOTFS}/etc/
+	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/ubuntu/usr/bin/* ${SYSDRV_DIR_OUT_ROOTFS}/usr/bin/
+	# cp -d $(SYSDRV_DIR)/tools/board/luckfox_config/ubuntu/usr/lib/* ${SYSDRV_DIR_OUT_ROOTFS}/usr/lib/
 ifeq ($(ENABLE_EMMC),YES)
 	cp $(SYSDRV_DIR)/tools/board/emmc/emmc_fstab $(SYSDRV_DIR_OUT_ROOTFS)/etc/fstab
 	cp $(SYSDRV_DIR)/tools/board/emmc/emmc_filesystem_resize.sh $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/filesystem_resize.sh

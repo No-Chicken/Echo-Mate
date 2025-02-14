@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo_defconfig() {
+	
+}
+
+case $1 in
+start)
+	echo_defconfig
+	;;
+*)
+	exit 1
+	;;
+esac
