@@ -38,6 +38,20 @@ todo
 注：登录账号和密码，改过的SDK都设置为了`root`，如果需要改密码，除了常规的在buildroot deconfig里面更改，还需要在 <rv1106-sdk>/sysdrv/tools/board/buildroot/shadow_defconfig修改你的密码计算哈希值，再编译。
 
 
+### 4.0 设置时区
+
+1. 打开文件
+
+   ```
+   vi /etc/profile
+   ```
+
+2. 添加内容
+
+   ```
+   export TZ=CST-8
+   ```
+
 ### 4.1 如何使用WIFI：
 
 1. 开启wifi
@@ -87,7 +101,7 @@ todo
    [  698.647953] RTL8723BS: set group key camid:5, addr:9e:a4:d3:f5:da:8d, kid:1, type:AES
    ```
 
-5. 配置IP
+5. 上面的wpa_supplicant服务启动后，建议等待一会，再配置IP
 
    ```bash
    udhcpc -i wlan0
