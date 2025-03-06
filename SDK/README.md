@@ -122,7 +122,7 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 2. 把output中的镜像文件如下，烧录到空白的SD卡. SD卡格式化可以使用`SD Card Formatter`。
 
 <p align="center">
-      	<img border="1px" width="75%" src="./assets/烧录SD.jpg">
+      	<img border="1px" width="75%" src="./assets/SD-flash.jpg">
 </p>
 
 
