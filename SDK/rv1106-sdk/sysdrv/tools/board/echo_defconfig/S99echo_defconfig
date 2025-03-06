@@ -18,9 +18,17 @@ set_audio_config() {
 	amixer -c 0 cset name='DAC LINEOUT Volume' 18
 }
 
+# insmod
+set_insmod() {
+    chmod +x /oem/usr/ko/insmod_ko.sh
+    chmod +x /oem/usr/ko/insmod_wifi.sh
+    /oem/usr/ko/insmod_ko.sh
+}
+
 case $1 in
 start)
 	set_audio_config
+    set_insmod
 	;;
 *)
 	exit 1
