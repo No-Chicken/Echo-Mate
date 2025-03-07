@@ -10,7 +10,9 @@
 
 ```shell
 git clone https://github.com/No-Chicken/Echo-Mate.git
-cd ./SDK/luckfox-pico-sdk
+cd Echo-Mate
+git submodule update --init --recursive
+cd ./SDK/rv1106-sdk
 ```
 
 </br>
