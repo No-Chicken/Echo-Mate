@@ -320,7 +320,7 @@
 		fps = <60>;
 		buswidth = <8>;
 		debug = <0x7>;
-		rotate = <90>;
+		rotate = <270>;
 		//bgr = <1>;	//RGB->BGR
 		//led-gpios = <&gpio1 RK_PC5 GPIO_ACTIVE_HIGH>;		//BL
 		dc-gpios = <&gpio1 RK_PD0 GPIO_ACTIVE_HIGH>;		//DC
@@ -409,11 +409,35 @@
 		};
 	};
 
+	// led_b
     gpio0-pa4 {
         gpio0_pa4:gpio0-pa4 {
             rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
     	};
 	};
+
+	gpio1-pa0 {
+        gpio1_pa0:gpio1-pa0 {
+            rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
+    	};
+	};
+	gpio1-pa1 {
+        gpio1_pa1:gpio1-pa1 {
+            rockchip,pins = <1 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
+    	};
+	};
+	gpio1-pa2 {
+        gpio1_pa2:gpio1-pa2 {
+            rockchip,pins = <1 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+    	};
+	};
+	gpio1-pa3 {
+        gpio1_pa3:gpio1-pa3 {
+            rockchip,pins = <1 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
+    	};
+	};
+
+
 };
 
 
