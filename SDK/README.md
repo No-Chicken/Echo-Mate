@@ -114,6 +114,8 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 
 ### 5.1 SD卡烧录
 
+**注意：** 使用SD卡启动，需要保持SPI NAND FLASH是空白的
+
 1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1106
 
 <p align="center">
@@ -128,6 +130,20 @@ sudo apt-get install repo git ssh make gcc gcc-multilib g++-multilib module-assi
 </p>
 
 
-### 5.2 NAND Flash烧录
+### 5.2 NAND Flash 擦除
 
-1. 首先下载并打开瑞芯微的SocToolKit，进入，选择RV1106
+1. 打开瑞芯微的SocToolKit，进入，选择RV1106, 选择高级功能，按照步骤进行擦除
+
+<p align="center">
+      	<img border="1px" width="75%" src="./assets/nand_clear.jpg">
+</p>
+
+### 5.3 NAND Flash 烧录
+
+1. 打开瑞芯微的SocToolKit，进入，选择RV1106, 按住boot键然后USB插上电脑, 插上电脑后松开boot, 就会出现Maskrom.
+
+2. 然后选择你的固件路径, 点击下载即可
+
+<p align="center">
+      	<img border="1px" width="75%" src="./assets/nand_download.jpg">
+</p>
