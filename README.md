@@ -41,6 +41,8 @@ git submodule update --remote --merge --recursive
 
 SDK开发环境与系统配置详见SDK文件夹中的[README.md](./SDK/README.md).
 
+Demo如何烧录使用详见Demo文件夹的[README.md](./Demo/README.md).
+
 <br>
 
 ## 4. 仓库目录说明
