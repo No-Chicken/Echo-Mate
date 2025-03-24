@@ -41,7 +41,7 @@ git submodule update --remote --merge --recursive
 
 SDK开发环境与系统配置详见SDK文件夹中的[README.md](./SDK/README.md).
 
-Demo如何烧录使用详见Demo文件夹的[README.md](./Demo/README.md).
+桌面机器人demo, 如何烧录使用详见Demo文件夹的[README.md](https://github.com/No-Chicken/Demo4Echo/blob/main/DeskBot_demo/README.md).
 
 <br>
 
