@@ -8,14 +8,15 @@ set_audio_config() {
     # 设置 ADC-MIC-RIGHT 为 mute 关闭
     amixer -c 0 cset name='ADC MIC Right Switch' 1
 
-    # 设置 ADC Digital Left 为 46
-    amixer -c 0 cset name='ADC Digital right Volume' 211
-
-    # 设置 ADC ALC Left
+    # 设置 ADC Digital Left (0-255)
+    amixer -c 0 cset name='ADC Digital Left Volume' 211
+    # 设置 ADC MIC Left gain (0-3)
+    amixer -c 0 cset name='ADC MIC Left Gain' 3
+    # 设置 ADC ALC Left(0-31)
     amixer -c 0 cset name='ADC ALC Left Volume' 16
 
 	# 设置扬声器音量(0~30)
-	amixer -c 0 cset name='DAC LINEOUT Volume' 18
+	amixer -c 0 cset name='DAC LINEOUT Volume' 25
 }
 
 # insmod
