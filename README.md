@@ -6,13 +6,18 @@
 
 本项目是一个十分硬核，功能超多的桌面机器人。是基于RV1106，有LVGL菜单，可以陪你聊天，翻译，看天气，能跑AI相机，小巧的linux桌面助手和开发板~
 
-<br>
+
+<p align="center">
+   <img border="1px" width="75%" src="./assets/main_pic.jpeg">
+</p>
 
 ## 2. 功能演示
 
 1. 功能演示
 
-
+   <p align="center">
+      <img border="1px" width="100%" src="./assets/show.png">
+   </p>
 
 2. Desk-Bot demo 功能表
 
