@@ -26,10 +26,25 @@ set_insmod() {
     /oem/usr/ko/insmod_ko.sh
 }
 
+# start desk_bot
+start_desk_bot() {
+    sleep 1
+    # 启用 Wi-Fi
+    ifconfig wlan0 up
+    mkdir -p /var/run/wpa_supplicant
+    # 切换到程序所在目录
+    cd /root/bin || { echo "Failed to change directory to /root/bin"; exit 1; }
+    # 确保 main 可执行文件有权限
+    chmod +x main
+    # 启动桌面机器人
+    ./main
+}
+
 case $1 in
 start)
 	set_audio_config
     set_insmod
+    start_desk_bot
 	;;
 *)
 	exit 1
