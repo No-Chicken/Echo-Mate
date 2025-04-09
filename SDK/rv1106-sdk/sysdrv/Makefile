@@ -606,7 +606,7 @@ else
 	cp $(SYSDRV_DIR)/tools/board/buildroot/S99rtcinit $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 	cp $(SYSDRV_DIR)/tools/board/buildroot/S50sshd $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 	cp $(SYSDRV_DIR)/tools/board/buildroot/S99python $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
-	cp $(SYSDRV_DIR)/tools/board/echo_defconfig/S99echo_defconfig $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
+	cp $(SYSDRV_DIR)/tools/board/echo_defconfig/S99start_echo_defconfig $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/S99luckfoxconfigload $(SYSDRV_DIR_OUT_ROOTFS)/etc/init.d/
 	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox-config  $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/
 	# cp $(SYSDRV_DIR)/tools/board/luckfox_config/luckfox_switch_rgb_resolution $(SYSDRV_DIR_OUT_ROOTFS)/usr/bin/

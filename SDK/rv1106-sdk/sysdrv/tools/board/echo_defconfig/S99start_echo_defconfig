@@ -32,6 +32,12 @@ start_desk_bot() {
     # 启用 Wi-Fi
     ifconfig wlan0 up
     mkdir -p /var/run/wpa_supplicant
+    # 启动 wpa_supplicant
+    wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
+    sleep 2
+    # ip get
+    udhcpc -i wlan0 -n -t 3
+    sleep 1
     # 切换到程序所在目录
     cd /root/bin || { echo "Failed to change directory to /root/bin"; exit 1; }
     # 确保 main 可执行文件有权限
