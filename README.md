@@ -50,6 +50,11 @@ git submodule update --init --recursive
 ```shell
 git submodule update --remote --merge --recursive
 ```
+由于子仓库有大文件LFS，，请执行：
+
+```shell
+git lfs pull
+```
 
 SDK开发环境与系统配置详见SDK文件夹中的[README.md](./SDK/README.md).
 
