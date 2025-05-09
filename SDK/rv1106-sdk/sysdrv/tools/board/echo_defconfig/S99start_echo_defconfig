@@ -50,7 +50,7 @@ case $1 in
 start)
 	set_audio_config
     set_insmod
-    start_desk_bot
+    # start_desk_bot
 	;;
 *)
 	exit 1
