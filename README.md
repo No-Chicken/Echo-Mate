@@ -54,6 +54,7 @@ git submodule update --remote --merge --recursive
 
 ```shell
 git lfs pull
+git submodule foreach --recursive 'git lfs pull'
 ```
 
 SDK开发环境与系统配置详见SDK文件夹中的[README.md](./SDK/README.md).
