@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  rv1106-dev:
+    container_name: echo-mate
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # 将当前目录下的所有文件挂载到容器的 /project 目录
+      - .:/project
+      # 挂载 X11 socket，实现 GUI 转发
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    # 环境变量
+    environment:
+      - DISPLAY=${DISPLAY}
+
+    # 开启特权模式，编译sdk需要
+    privileged: true
+    network_mode: "host"
+    stdin_open: true
+    tty: true
