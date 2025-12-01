@@ -32,7 +32,24 @@
       <img border="1px" width="75%" src="./assets/func_map.png">
    </p>
 
-3. 
+3. 开发板参数
+
+   <p align="center">
+      <img border="1px" width="75%" src="./assets/board_detail.png">
+   </p>
+
+   | 参数          | Value                  |
+   | ------------- | ---------------------- |
+   | 芯片          | RV1106                 |
+   | 处理器        | 单核Cortex A7          |
+   | NPU           | 1TOPS,支持int4、in8、int16 |
+   | 内存          | 256MB DDR3L            |
+   | Wi-Fi+蓝牙    | RTL8723bs              |
+   | 屏幕接口      | 显示 SPI + 触摸 IIC    |
+   | 屏幕型号      | P024C128-CTP           |
+   | 喇叭 MIC 接口 | MX1.25mm               |
+   | 存储介质      | SD卡 或 NAND FLASH     |
+   | 空闲GPIO      | 8个GPIO引出排针        |
 
 <br>
 
