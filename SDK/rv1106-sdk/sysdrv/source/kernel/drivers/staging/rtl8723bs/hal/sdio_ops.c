@@ -885,6 +885,7 @@ static struct recv_buf *sd_recv_rxfifo(struct adapter *adapter, u32 size)
 		}
 
 		if (!recvbuf->pskb) {
+			rtw_enqueue_recvbuf(recvbuf, &recv_priv->free_recv_buf_queue);
 			DBG_871X("%s: alloc_skb fail! read =%d\n", __func__, readsize);
 			return NULL;
 		}
@@ -894,6 +895,7 @@ static struct recv_buf *sd_recv_rxfifo(struct adapter *adapter, u32 size)
 	readbuf = recvbuf->pskb->data;
 	ret = sdio_read_port(&adapter->iopriv.intf, WLAN_RX0FF_DEVICE_ID, readsize, readbuf);
 	if (ret == _FAIL) {
+		rtw_enqueue_recvbuf(recvbuf, &recv_priv->free_recv_buf_queue);
 		RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("%s: read port FAIL!\n", __func__));
 		return NULL;
 	}
