@@ -1531,8 +1531,13 @@ long do_shmat(int shmid, char __user *shmaddr, int shmflg,
 
 	if (addr) {
 		if (addr & (shmlba - 1)) {
-			if (shmflg & SHM_RND) {
-				addr &= ~(shmlba - 1);  /* round down */
+			/*
+			 * Round down to the nearest multiple of shmlba.
+			 * For sane do_mmap_pgoff() parameters, avoid
+			 * round downs that trigger nil-page and MAP_FIXED.
+			 */
+			if ((shmflg & SHM_RND) && addr >= shmlba)
+				addr &= ~(shmlba - 1);
 
 				/*
 				 * Ensure that the round-down is non-nil
