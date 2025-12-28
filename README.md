@@ -10,7 +10,7 @@
 
 演示视频链接: https://www.bilibili.com/video/BV161ZaYyEmF/
 
-手册地址: https://no-chicken.xyz/
+油炸鸡官网手册地址: https://no-chicken.xyz/
 
 <p align="center">
    <img border="1px" width="75%" src="./assets/main_pic.jpeg">
