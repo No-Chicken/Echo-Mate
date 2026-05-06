@@ -484,6 +484,7 @@ int esp6_output_head(struct xfrm_state *x, struct sk_buff *skb, struct esp_info 
 	struct sk_buff *trailer;
 	int tailen = esp->tailen;
 	unsigned int allocsz;
+	unsigned int allocsz;
 
 	if (x->encap) {
 		int err = esp6_output_encap(x, skb, esp);
