@@ -928,6 +928,8 @@ int cgroup1_parse_param(struct fs_context *fc, struct fs_parameter *param)
 	if (opt == -ENOPARAM) {
 		if (strcmp(param->key, "source") == 0) {
 			if (param->type != fs_value_is_string)
+			if (param->type != fs_value_is_string)
+				return invalf(fc, "Non-string source");
 				return invalf(fc, "Non-string source");
 			if (fc->source)
 				return invalf(fc, "Multiple sources not supported");
